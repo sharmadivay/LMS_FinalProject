@@ -1,0 +1,167 @@
+import { User } from "../models/userModel.js";
+import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
+
+// register user
+export const registerUserController = async (req, res) => {
+  try {
+    const { name, email, password, avatar } = req.body;
+
+    // validation
+    if ((!name, !email, !password)) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields Are Required",
+      });
+    }
+
+    // check if user exists
+    const checkUser = await User.findOne({ email });
+
+    if (checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Already Register",
+      });
+    }
+
+    // hash password
+    const hashedPassword = await hashPassword(password);
+
+    // check avatar
+    const checkAvatar = avatar || "";
+
+    // create user
+    const user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      avatar: checkAvatar,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not Created",
+      });
+    }
+
+    // add user
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User Register Successfully",
+    });
+  } catch (error) {
+    console.log("User Registration Error :", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// login user
+export const loginUserController = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validation
+    if ((!email, !password)) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields Are Required",
+      });
+    }
+
+    // check if user exists
+    const checkUser = await User.findOne({ email });
+
+    if (!checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not Register",
+      });
+    }
+
+    // check password
+    const checkPassword = await comparePasswords(password, checkUser.password);
+
+    if (!checkPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Password Not Match",
+      });
+    }
+
+    // login user
+    res.status(200).json({
+      success: true,
+      message: "User Login Successfully",
+    });
+  } catch (error) {
+    console.log("User Login Error: ", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// get all users
+export const getAllUsersControllers = async (req,res) =>{
+    try {
+        const existingUsers = await User.find().select(`-password`);
+
+        if(!existingUsers){
+            return res.status(400).json({
+                success: false,
+                message: "No User Register"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "All Users",
+            users: existingUsers
+        })
+        
+    } catch (error) {
+        console.log("Gel All User Error: ",error.message || error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
+
+// get user 
+export const getOneUserController = async (req,res) => {
+    try {
+
+        const {id} = req.params;
+
+        // check user
+        const checkUser = await User.findById(id).select(`-password`);
+
+         if(!checkUser){
+            return res.status(400).json({
+                success: false,
+                message: "User Not Found"
+            })
+         }
+        
+        res.status(200).json({
+            success: true,
+            message: "User Found",
+            user: checkUser
+        }) 
+
+    } catch (error) {
+        console.log("Get One User Error: ", error.message || error);
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
