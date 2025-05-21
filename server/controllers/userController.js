@@ -4,7 +4,7 @@ import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
 // register user
 export const registerUserController = async (req, res) => {
   try {
-    const { name, email, password, avatar } = req.body;
+    const { name, email, password} = req.body;
 
     // validation
     if ((!name, !email, !password)) {
@@ -27,15 +27,11 @@ export const registerUserController = async (req, res) => {
     // hash password
     const hashedPassword = await hashPassword(password);
 
-    // check avatar
-    const checkAvatar = avatar || "";
-
     // create user
     const user = new User({
       name,
       email,
       password: hashedPassword,
-      avatar: checkAvatar,
     });
 
     if (!user) {
@@ -109,59 +105,134 @@ export const loginUserController = async (req, res) => {
 };
 
 // get all users
-export const getAllUsersControllers = async (req,res) =>{
-    try {
-        const existingUsers = await User.find().select(`-password`);
+export const getAllUsersControllers = async (req, res) => {
+  try {
+    const existingUsers = await User.find().select(`-password`);
 
-        if(!existingUsers){
-            return res.status(400).json({
-                success: false,
-                message: "No User Register"
-            })
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "All Users",
-            users: existingUsers
-        })
-        
-    } catch (error) {
-        console.log("Gel All User Error: ",error.message || error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        })
+    if (!existingUsers) {
+      return res.status(400).json({
+        success: false,
+        message: "No User Register",
+      });
     }
-}
 
-// get user 
-export const getOneUserController = async (req,res) => {
-    try {
+    res.status(200).json({
+      success: true,
+      message: "All Users",
+      users: existingUsers,
+    });
+  } catch (error) {
+    console.log("Gel All User Error: ", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
 
-        const {id} = req.params;
+// get user
+export const getOneUserController = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-        // check user
-        const checkUser = await User.findById(id).select(`-password`);
+    // check user
+    const checkUser = await User.findById(id).select(`-password`);
 
-         if(!checkUser){
-            return res.status(400).json({
-                success: false,
-                message: "User Not Found"
-            })
-         }
-        
-        res.status(200).json({
-            success: true,
-            message: "User Found",
-            user: checkUser
-        }) 
-
-    } catch (error) {
-        console.log("Get One User Error: ", error.message || error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error"
-        })
+    if (!checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not Found",
+      });
     }
-}
+
+    res.status(200).json({
+      success: true,
+      message: "User Found",
+      user: checkUser,
+    });
+  } catch (error) {
+    console.log("Get One User Error: ", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+// update user
+export const updateUserController = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    const { id } = req.params;
+
+    // check user
+    const checkUser = await User.findById(id);
+
+    if (!checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+
+    let hashedPassword = "";
+
+    if (password) {
+      hashedPassword = await hashPassword(password);
+    }
+
+    // get updated values
+    checkUser.name = name || checkUser.name;
+    checkUser.password = hashedPassword || checkUser.password;
+
+    await checkUser.save();
+
+    res.status(200).json({
+      success: false,
+      message: "User Updated Successfully",
+    });
+  } catch (error) {
+    console.log("Update User Error: ", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server Error",
+    });
+  }
+};
+
+// add update avatar
+export const avatarController = async (req, res) => {
+  try {
+    
+    const { url } = req.avatar;
+    
+    const { id } = req.params;
+
+    const checkUser = await User.findById(id).select(`-password`);
+
+    if (!checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User Not found",
+      });
+    }
+
+    checkUser.avatar = url || checkUser.avatar;
+
+    await checkUser.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Avatar Added Successfully",
+      checkUser
+    });
+  } catch (error) {
+    console.log("Avatar Error", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+
