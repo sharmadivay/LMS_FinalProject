@@ -1,10 +1,11 @@
 import { User } from "../models/userModel.js";
+import {Course} from "../models/courseModel.js"
 import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
 
 // register user
 export const registerUserController = async (req, res) => {
   try {
-    const { name, email, password} = req.body;
+    const { name, email, password } = req.body;
 
     // validation
     if ((!name, !email, !password)) {
@@ -203,9 +204,8 @@ export const updateUserController = async (req, res) => {
 // add update avatar
 export const avatarController = async (req, res) => {
   try {
-    
     const { url } = req.avatar;
-    
+
     const { id } = req.params;
 
     const checkUser = await User.findById(id).select(`-password`);
@@ -224,7 +224,7 @@ export const avatarController = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Avatar Added Successfully",
-      checkUser
+      checkUser,
     });
   } catch (error) {
     console.log("Avatar Error", error.message || error);
@@ -235,4 +235,48 @@ export const avatarController = async (req, res) => {
   }
 };
 
+// enrollment
+export const addEnrollement = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { enrollCourseId } = req.body;
 
+    // check user
+    const checkUser = await User.findById(id).select(`-password`);
+
+    if (!checkUser) {
+      return res.status(400).json({
+        success: false,
+        message: "No User Found",
+      });
+    }
+
+    // Check if course already enrolled
+    if (checkUser.enrolledCourses.includes(enrollCourseId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Already Enrolled in this Course",
+      });
+    }
+
+    checkUser.enrolledCourses.push(enrollCourseId);
+
+    const course = await Course.findById(enrollCourseId);
+    course.enrolledStudents.push(id);
+
+    checkUser.save();
+    course.save();
+
+
+    res.status(200).json({
+      success: true,
+      message: "Course Enrolled Successfully",
+    });
+  } catch (error) {
+    console.log("Add Enrollment Error", error.message || error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};

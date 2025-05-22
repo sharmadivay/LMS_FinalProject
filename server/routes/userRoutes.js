@@ -1,7 +1,7 @@
 import express from "express"
 import upload from "../utils/multer.js"
 import {uploadAvatar} from "../middlewares/avatar.js"
-import { avatarController, getAllUsersControllers, getOneUserController, loginUserController, registerUserController, updateUserController } from "../controllers/userController.js";
+import { addEnrollement, avatarController, getAllUsersControllers, getOneUserController, loginUserController, registerUserController, updateUserController } from "../controllers/userController.js";
 
 const router = express.Router();
 
@@ -22,5 +22,8 @@ router.put("/update-user/:id",updateUserController);
 
 // add/update avatar
 router.put("/update-avatar/:id",upload.single(`avatar`),uploadAvatar,avatarController);
+
+// add enrollement 
+router.post("/enroll-course",addEnrollement);
 
 export default router ;
