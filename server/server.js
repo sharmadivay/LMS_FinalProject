@@ -4,6 +4,7 @@ import cors from "cors"
 
 // routes
 import userRoute from "./routes/userRoutes.js"
+import teacherRoute from "./routes/teacherRoutes.js"
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -18,6 +19,7 @@ app.use(express.urlencoded({extended:true}));
 
 // routes
 app.use("/api/user",userRoute);
+app.use("/api/teacher",teacherRoute);
 
 const PORT = process.env.PORT || 8000;
 
