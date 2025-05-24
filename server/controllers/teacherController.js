@@ -1,5 +1,6 @@
 import { Teacher } from "../models/teacherSchema.js";
 import { hashPassword, comparePasswords } from "../utils/passwordProtect.js";
+import {generateToken} from "../utils/genrateToken.js";
 
 // register controller
 export const registerTeacherController = async (req, res) => {
@@ -7,7 +8,7 @@ export const registerTeacherController = async (req, res) => {
     const { name, email, password } = req.body;
 
     // validation
-    if ((!name, !email, !password)) {
+    if ((!name || !email || !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -43,9 +44,13 @@ export const registerTeacherController = async (req, res) => {
 
     // add teacher
     await user.save();
+    
+    const savedUser = await Teacher.findOne({email}).select(`-password`);
+    
+    await generateToken(savedUser._id)
 
     res.status(200).json({
-      success: false,
+      success: true,
       message: "Teacher Register Successfully",
     });
   } catch (error) {
@@ -63,7 +68,7 @@ export const loginTeacherContrller = async (req, res) => {
     const { email, password } = req.body;
 
     // validation
-    if ((!email, !password)) {
+    if ((!email || !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -89,6 +94,8 @@ export const loginTeacherContrller = async (req, res) => {
         message: "Password Not Match",
       });
     }
+
+    await generateToken(checkUser._id);
 
     // login User
     res.status(200).json({

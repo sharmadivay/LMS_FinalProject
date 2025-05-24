@@ -1,6 +1,7 @@
 import { User } from "../models/userModel.js";
 import {Course} from "../models/courseModel.js"
 import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
+import { generateToken } from "../utils/genrateToken.js";
 
 // register user
 export const registerUserController = async (req, res) => {
@@ -8,7 +9,7 @@ export const registerUserController = async (req, res) => {
     const { name, email, password } = req.body;
 
     // validation
-    if ((!name, !email, !password)) {
+    if ((!name || !email || !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -44,6 +45,10 @@ export const registerUserController = async (req, res) => {
 
     // add user
     await user.save();
+    
+    const savedUser = await User.findOne({email}).select(`-password`);
+
+    await generateToken(savedUser._id);
 
     res.status(200).json({
       success: true,
@@ -64,7 +69,7 @@ export const loginUserController = async (req, res) => {
     const { email, password } = req.body;
 
     // validation
-    if ((!email, !password)) {
+    if ((!email ||  !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -90,6 +95,8 @@ export const loginUserController = async (req, res) => {
         message: "Password Not Match",
       });
     }
+    
+    await generateToken(checkUser._id);
 
     // login user
     res.status(200).json({
