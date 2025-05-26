@@ -30,7 +30,7 @@ const Register = () => {
      }
   }
   return (
-    <div>
+    <div className=" w-full h-full rounded-l-xl  bg-[#fffefe]">
       
     </div>
   )
