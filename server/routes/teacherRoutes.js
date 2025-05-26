@@ -1,6 +1,7 @@
 import express from "express"
 import { avatarController, getAllTeachersControllers, getOneTeacherController, loginTeacherContrller, registerTeacherController, updateTeacherController } from "../controllers/teacherController.js";
-
+import upload from "../utils/multer.js"
+import {uploadAvatar} from "../middlewares/avatar.js"
 const router = express.Router();
 
 // register teacher

@@ -1,5 +1,6 @@
 import { Teacher } from "../models/teacherSchema.js";
 import { hashPassword, comparePasswords } from "../utils/passwordProtect.js";
+import {generateToken} from "../utils/genrateToken.js";
 
 // register controller
 export const registerTeacherController = async (req, res) => {
@@ -7,7 +8,7 @@ export const registerTeacherController = async (req, res) => {
     const { name, email, password } = req.body;
 
     // validation
-    if ((!name, !email, !password)) {
+    if ((!name || !email || !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -17,12 +18,27 @@ export const registerTeacherController = async (req, res) => {
     // check if user exists
     const checkUser = await Teacher.findOne({ email });
 
-    if (checkUser) {
+    if (checkUser && checkUser.isVerified == "false") {
       return res.status(400).json({
         success: false,
-        message: "Teacher Already Exits",
+        message: "Application Under Verification",
       });
     }
+
+    if (checkUser && checkUser.isVerified == "rejected") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Rejected",
+      });
+    }
+
+    if (checkUser && checkUser.isVerified == "true") {
+      return res.status(400).json({
+        success: false,
+        message: "Teacher Already Exists",
+      });
+    }
+
 
     // hash Password
     const hashedPassword = await hashPassword(password);
@@ -43,10 +59,12 @@ export const registerTeacherController = async (req, res) => {
 
     // add teacher
     await user.save();
-
+    
+    const savedUser = await Teacher.findOne({email}).select(`-password`);
+    
     res.status(200).json({
-      success: false,
-      message: "Teacher Register Successfully",
+      success: true,
+      message: "Application Sent For Verification ",
     });
   } catch (error) {
     console.log("Register Teacher Error", error.message || error);
@@ -63,7 +81,7 @@ export const loginTeacherContrller = async (req, res) => {
     const { email, password } = req.body;
 
     // validation
-    if ((!email, !password)) {
+    if ((!email || !password)) {
       return res.status(400).json({
         success: false,
         message: "All Fields Are Required",
@@ -80,6 +98,20 @@ export const loginTeacherContrller = async (req, res) => {
       });
     }
 
+     if (checkUser && checkUser.isVerified == "false") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Under Verification",
+      });
+    }
+
+    if (checkUser && checkUser.isVerified == "rejected") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Rejected",
+      });
+    }
+
     // check password
     const checkPassword = await comparePasswords(password, checkUser.password);
 
@@ -89,6 +121,8 @@ export const loginTeacherContrller = async (req, res) => {
         message: "Password Not Match",
       });
     }
+
+    await generateToken(res,checkUser._id);
 
     // login User
     res.status(200).json({

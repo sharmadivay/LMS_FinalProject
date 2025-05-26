@@ -1,7 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 import cors from "cors"
-
+import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
@@ -13,8 +13,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json())
+app.use(cors({
+  origin: "http://localhost:5173", // ✅ Must match exactly
+  credentials: true
+}));
+app.use(cookieParser());
+app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // routes
