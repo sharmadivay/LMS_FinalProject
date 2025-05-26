@@ -1,11 +1,9 @@
-function App() {
-  return (
-    <>
-      <h1 class="text-2xl text-center underline">
-    Hello world!
-  </h1>
-    </>
-  );
+import React from "react";
+import AuthPage from "./pages/Authpage";
+export default function App(){
+return(
+      <div>
+            <AuthPage/>
+      </div>
+);
 }
-
-export default App;
