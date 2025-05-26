@@ -33,7 +33,7 @@ const Login = () => {
 
   return (
     <div className="w-full h-full bg-[#fffefe] text-[#121312] ">
-      <div className=" border mx-4 flex flex-col ml-8  space-y-4">
+      <div className=" border mx-4 flex flex-col ml-8 h-full  space-y-4">
       <h2 className="text-xl">Lets Sign you in </h2>
       <p className="text-sm font-sm">You don't have an account <span className="underline text-blue-500">sign up</span></p>
       <div className="flex gap-4">
