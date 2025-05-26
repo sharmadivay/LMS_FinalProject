@@ -1,6 +1,6 @@
 import {Routes,Route} from "react-router-dom"
 import {Toaster} from "react-hot-toast"
-import Login from "./pages/Login";
+import Login from "./pages/Login"
 import LandingPage from "./pages/LandingPage";
 import Register from "./pages/Register";
 import './App.css'
