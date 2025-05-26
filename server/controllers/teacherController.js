@@ -98,6 +98,20 @@ export const loginTeacherContrller = async (req, res) => {
       });
     }
 
+     if (checkUser && checkUser.isVerified == "false") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Under Verification",
+      });
+    }
+
+    if (checkUser && checkUser.isVerified == "rejected") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Rejected",
+      });
+    }
+
     // check password
     const checkPassword = await comparePasswords(password, checkUser.password);
 
