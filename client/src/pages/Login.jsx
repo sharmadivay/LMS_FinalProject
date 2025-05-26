@@ -94,7 +94,16 @@ const Login = () => {
               className="border rounded-md px-3 py-2"
             />
             </div>
-            
+            </div>
+            <button
+            type="submit"
+            className=" w-full border rounded-full bg-[#1a1a1b] text-[#dbdbdb] "
+          >
+            Login
+          </button>
+            </form>
+        </div>
+        </div>
         </div>
     )
 }
