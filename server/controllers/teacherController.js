@@ -18,12 +18,27 @@ export const registerTeacherController = async (req, res) => {
     // check if user exists
     const checkUser = await Teacher.findOne({ email });
 
-    if (checkUser) {
+    if (checkUser && checkUser.isVerified == "false") {
       return res.status(400).json({
         success: false,
-        message: "Teacher Already Exits",
+        message: "Application Under Verification",
       });
     }
+
+    if (checkUser && checkUser.isVerified == "rejected") {
+      return res.status(400).json({
+        success: false,
+        message: "Application Rejected",
+      });
+    }
+
+    if (checkUser && checkUser.isVerified == "true") {
+      return res.status(400).json({
+        success: false,
+        message: "Teacher Already Exists",
+      });
+    }
+
 
     // hash Password
     const hashedPassword = await hashPassword(password);
@@ -47,11 +62,9 @@ export const registerTeacherController = async (req, res) => {
     
     const savedUser = await Teacher.findOne({email}).select(`-password`);
     
-    await generateToken(savedUser._id)
-
     res.status(200).json({
       success: true,
-      message: "Teacher Register Successfully",
+      message: "Application Sent For Verification ",
     });
   } catch (error) {
     console.log("Register Teacher Error", error.message || error);
@@ -95,7 +108,7 @@ export const loginTeacherContrller = async (req, res) => {
       });
     }
 
-    await generateToken(checkUser._id);
+    await generateToken(res,checkUser._id);
 
     // login User
     res.status(200).json({

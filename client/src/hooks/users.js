@@ -38,3 +38,39 @@ export const loginUser = async (data) => {
     toast.error(`${error}`);
   }
 };
+
+export const registerTeacher = async (data) => {
+  try {
+    const { name, email, password } = data;
+    const res = await axios.post(
+      `${url}/register-teacher`,
+      {
+        name,
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    toast.error(`${error}`);
+  }
+};
+
+export const loginTeacher = async (data) =>{
+  try {
+    const {email,password} = data 
+    const res = await axios.post(`${url}/login-teacher`,{
+      email,
+      password
+    },{
+      withCredentials: true
+    });
+    return res.data
+  } catch (error) {
+    toast.error(`${error}`)
+  }
+}

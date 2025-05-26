@@ -48,7 +48,7 @@ export const registerUserController = async (req, res) => {
     
     const savedUser = await User.findOne({email}).select(`-password`);
 
-    await generateToken(savedUser._id);
+    await generateToken(res,savedUser._id);
 
     res.status(200).json({
       success: true,
@@ -96,7 +96,7 @@ export const loginUserController = async (req, res) => {
       });
     }
     
-    await generateToken(checkUser._id);
+    await generateToken(res,checkUser._id);
 
     // login user
     res.status(200).json({
