@@ -78,8 +78,9 @@ export const registerTeacherController = async (req, res) => {
 // login Controller
 export const loginTeacherContrller = async (req, res) => {
   try {
+    
     const { email, password } = req.body;
-
+  
     // validation
     if ((!email || !password)) {
       return res.status(400).json({
@@ -89,24 +90,24 @@ export const loginTeacherContrller = async (req, res) => {
     }
 
     // check if user exist
-    const checkUser = Teacher.findOne({ email });
-
+    const checkUser = await Teacher.findOne({ email });
+  
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Register",
       });
     }
 
      if (checkUser && checkUser.isVerified == "false") {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Application Under Verification",
       });
     }
 
     if (checkUser && checkUser.isVerified == "rejected") {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Application Rejected",
       });
