@@ -23,7 +23,7 @@ const Login = () => {
     } else {
       res = await loginTeacher(data);
     }
-
+   
     if (res.success) {
       toast.success(res.message);
     } else {

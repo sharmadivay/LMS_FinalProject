@@ -1,13 +1,15 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const url = "http://localhost:8082/api/user";
+const userUrl = "http://localhost:8082/api/user";
+
+const teacherUrl = "http://localhost:8082/api/teacher";
 
 export const registerUser = async (data) => {
   try {
     const { name, email, password } = data;
     const res = await axios.post(
-      `${url}/register-user`,
+      `${userUrl}/register-user`,
       {
         name,
         email,
@@ -26,7 +28,7 @@ export const loginUser = async (data) => {
   try {
     const { email, password } = data;
     const res = await axios.post(
-      `${url}/login-user`,
+      `${userUrl}/login-user`,
       {
         email,
         password,
@@ -41,9 +43,10 @@ export const loginUser = async (data) => {
 
 export const registerTeacher = async (data) => {
   try {
+    console.log(data)
     const { name, email, password } = data;
     const res = await axios.post(
-      `${url}/register-teacher`,
+      `${teacherUrl}/register-teacher`,
       {
         name,
         email,
@@ -62,13 +65,15 @@ export const registerTeacher = async (data) => {
 
 export const loginTeacher = async (data) =>{
   try {
+    
     const {email,password} = data 
-    const res = await axios.post(`${url}/login-teacher`,{
+    const res = await axios.post(`${teacherUrl}/login-teacher`,{
       email,
       password
     },{
       withCredentials: true
     });
+     
     return res.data
   } catch (error) {
     toast.error(`${error}`)
