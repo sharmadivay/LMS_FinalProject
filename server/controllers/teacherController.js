@@ -9,7 +9,7 @@ export const registerTeacherController = async (req, res) => {
 
     // validation
     if ((!name || !email || !password)) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "All Fields Are Required",
       });
@@ -19,21 +19,21 @@ export const registerTeacherController = async (req, res) => {
     const checkUser = await Teacher.findOne({ email });
 
     if (checkUser && checkUser.isVerified == "false") {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Application Under Verification",
       });
     }
 
     if (checkUser && checkUser.isVerified == "rejected") {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Application Rejected",
       });
     }
 
     if (checkUser && checkUser.isVerified == "true") {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Teacher Already Exists",
       });
@@ -51,7 +51,7 @@ export const registerTeacherController = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Created",
       });
@@ -68,7 +68,7 @@ export const registerTeacherController = async (req, res) => {
     });
   } catch (error) {
     console.log("Register Teacher Error", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -83,7 +83,7 @@ export const loginTeacherContrller = async (req, res) => {
   
     // validation
     if ((!email || !password)) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "All Fields Are Required",
       });
@@ -117,7 +117,7 @@ export const loginTeacherContrller = async (req, res) => {
     const checkPassword = await comparePasswords(password, checkUser.password);
 
     if (!checkPassword) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Password Not Match",
       });
@@ -132,7 +132,7 @@ export const loginTeacherContrller = async (req, res) => {
     });
   } catch (error) {
     console.log("Login Teacher Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -145,7 +145,7 @@ export const getAllTeachersControllers = async (req, res) => {
     const existingUsers = await Teacher.find().select(`-password`);
 
     if (!existingUsers) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "No User Register",
       });
@@ -158,7 +158,7 @@ export const getAllTeachersControllers = async (req, res) => {
     });
   } catch (error) {
     console.log("Gel All User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -174,7 +174,7 @@ export const getOneTeacherController = async (req, res) => {
     const checkUser = await Teacher.findById(id).select(`-password`);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Found",
       });
@@ -187,7 +187,7 @@ export const getOneTeacherController = async (req, res) => {
     });
   } catch (error) {
     console.log("Get One User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -204,7 +204,7 @@ export const updateTeacherController = async (req, res) => {
     const checkUser = await Teacher.findById(id);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Found",
       });
@@ -228,7 +228,7 @@ export const updateTeacherController = async (req, res) => {
     });
   } catch (error) {
     console.log("Update User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal server Error",
     });
@@ -245,7 +245,7 @@ export const avatarController = async (req, res) => {
     const checkUser = await Teacher.findById(id).select(`-password`);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not found",
       });
@@ -262,7 +262,7 @@ export const avatarController = async (req, res) => {
     });
   } catch (error) {
     console.log("Avatar Error", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });

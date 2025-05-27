@@ -6,9 +6,10 @@ export const generateToken = async (res,userId) => {
       expiresIn: "2d",
     });
 
-    res.cookie("jwt", token, {
+    await res.cookie("jwt", token, {
       maxAge: 2 * 24 * 60 * 60 * 1000,
-      sameSite: "none",
+      httpOnly: true ,
+      sameSite: "strict",
     });
     console.log("Token Generated");
   } catch (error) {
