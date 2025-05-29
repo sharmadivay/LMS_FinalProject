@@ -1,38 +1,31 @@
-import{BrowserRouter as Router,Routes,Route}from"react-router-dom";
-import React from "react";
-import AuthPage from './pages/AuthPage';
-import Dashboard from './pages/Dashboard';
-import Navbar from './components/navbar';
-import Footer from './components/footer';
-import Sidebar from "./components/sidebar";
-  
+import {Routes,Route} from "react-router-dom"
+import {Toaster} from "react-hot-toast"
+import Login from "./pages/Auth/Login.jsx"
+import LandingPage from "./pages/Auth/LandingPage.jsx";
+import Register from "./pages/Auth/Register.jsx";
+import './App.css'
+import Home from "./pages/Dashboard/Home.jsx"
+function App() {
+  return (
+    <>
+      <Toaster/>
+        <Routes>
 
+          {/* Landing Page Routes  */}
+          <Route path="/" element={<LandingPage/>}>
+           <Route index element={<Login />} />
+           <Route path="login" element = {<Login/>}/>
+           <Route path="register" element = {<Register/>}/>
+          </Route>
 
-
-function App(){
-  return(
-    <Router>
-      <div className="app-wrapper">
-       { /* fixed navbar and sidebar*/}
-       <Navbar/>
-
-
-       <div className="main content">
-        {/* sidebbar*/}
-        <Sidebar/>
-
-
-        {/*pages*/}
-        <div className="content">
-          <Routes>
-            <Route path="./pages/Dashboard.jsx"/>
-          </Routes>
-        </div>
-
-       </div>
-      </div>
-    </Router>
-  )
+           {/* Home Page */}
+          <Route path="/home" element={<Home/>}/>
+          
+    
+        </Routes>
+     
+    </>
+  );
 }
 
 

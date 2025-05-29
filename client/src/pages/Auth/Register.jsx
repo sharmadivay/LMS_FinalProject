@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { registerUser, registerTeacher } from "../hooks/users.js";
+import { registerUser} from "../../hooks/users.js";
+import { registerTeacher } from "../../hooks/teachers.js";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link  , useNavigate} from "react-router-dom";
 
 
-import {FiUser ,  FiLock , FiMail } from 'react-icons/fi';
+import {FiUser ,  FiLock , FiMail , FiEye, FiEyeOff} from 'react-icons/fi';
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate()
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [role, setRole] = useState("student");
 
@@ -30,19 +34,26 @@ const Register = () => {
 
     if (role == "student") {
       res = await registerUser(user);
+      
     } else {
       res = await registerTeacher(user);
     }
 
     if (res.success) {
       toast.success(res.message);
+      navigate("/home")
     } else {
       toast.error(res.message);
     }
   };
+
+  const handleToggle = () =>{
+    setShowPassword(!showPassword)
+  }
+
   return (
     <div className="flex flex-col  justify-center items-start w-full h-full rounded-l-xl space-y-4 bg-[#fffefe] px-10">
-      <div className="">
+      <div >
         <h3 className="text-2xl">Register now</h3>
         <p>
           You already have an account
@@ -145,7 +156,7 @@ const Register = () => {
               < FiLock  size={20} className="ml-2" />
 
               <input
-                type="password"
+                type={showPassword?"text":"password"}
                 name="conPassword"
                 id="conPassword"
                 value={confirmPassword}
@@ -156,6 +167,9 @@ const Register = () => {
                 }}
                 className=" px-3 py-2 w-full focus:outline-none focus:ring-0 hover:border-none"
               />
+              {
+                showPassword? <FiEyeOff onClick={handleToggle} size={20} className="mr-2"/> : <FiEye size={20} onClick={handleToggle} className="mr-2"/>
+              }
             </div>
           </div>
           <button
