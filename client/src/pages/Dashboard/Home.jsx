@@ -25,8 +25,8 @@ const Home =  () => {
   return (
     <div>
         
-        {role == "student" && <StudentPage/>}
-        {role == "teacher" && <TeacherPage/>}
+        {role == "student" && <StudentPage user={user}/>}
+        {role == "teacher" && <TeacherPage user={user}/>}
     </div>
   )
 }

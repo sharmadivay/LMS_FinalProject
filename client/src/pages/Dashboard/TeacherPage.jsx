@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TeacherPage = () => {
+const TeacherPage = ({user}) => {
   return (
     <div>
       Teacher
