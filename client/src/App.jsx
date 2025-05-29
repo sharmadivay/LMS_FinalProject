@@ -4,7 +4,7 @@ import Login from "./pages/Auth/Login.jsx"
 import LandingPage from "./pages/Auth/LandingPage.jsx";
 import Register from "./pages/Auth/Register.jsx";
 import './App.css'
-import Home from "./pages/Home.jsx"
+import Home from "./pages/Dashboard/Home.jsx"
 function App() {
   return (
     <>

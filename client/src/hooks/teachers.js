@@ -1,6 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
+const teacherUrl = "http://localhost:8082/api/teacher";
+
 export const registerTeacher = async (data) => {
   try {
     console.log(data)

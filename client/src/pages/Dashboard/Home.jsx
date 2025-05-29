@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getMe } from "../hooks/getMe.js"
+import { getMe } from "../../hooks/getMe.js"
 import StudentPage from "./StudentPage.jsx"
 import TeacherPage from "./TeacherPage.jsx"
 import { useNavigate } from "react-router-dom"

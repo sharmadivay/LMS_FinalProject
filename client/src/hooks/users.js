@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 const userUrl = "http://localhost:8082/api/user";
 
-const teacherUrl = "http://localhost:8082/api/teacher";
+
 
 export const registerUser = async (data) => {
   try {
