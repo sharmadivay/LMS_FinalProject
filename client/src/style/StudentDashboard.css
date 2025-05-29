@@ -1,0 +1,43 @@
+.student-dashboard-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.course-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.student-course-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.student-course-card img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.student-course-card h3 {
+  margin: 0;
+}
+
+.student-course-card button {
+  margin-top: 0.5rem;
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}

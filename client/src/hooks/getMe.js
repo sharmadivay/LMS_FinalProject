@@ -13,3 +13,4 @@ export const getMe = async () => {
         toast.error(`${error}`)
     }
 }
+export default url;
