@@ -268,3 +268,87 @@ export const avatarController = async (req, res) => {
     });
   }
 };
+
+///course post
+export const postCourse = async (req, res) => {
+  try {
+    const { title, description, category, price } = req.body;
+    const filePaths = {
+      thumbnail: req.files?.thumbnail?.[0]?.path || "",
+      video: req.files?.video?.[0]?.path || "",
+      pdf: req.files?.pdf?.[0]?.path || "",
+      image: req.files?.image?.[0]?.path || "",
+    };
+
+    const course = await Course.create({
+      title,
+      description,
+      category,
+      price,
+      thumbnail: filePaths.thumbnail,
+      video: filePaths.video,
+      pdf: filePaths.pdf,
+      image: filePaths.image,
+      instructor: req.user._id,
+    });
+
+    const teacher = await Teacher.findById(req.user._id);
+    teacher.courseCreated.push(course._id);
+    await teacher.save();
+
+    res.status(201).json({ message: "Course created", course });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+///Get courses created by teacher
+export const getMyCourses = async (req, res) => {
+  try {
+    const courses = await Course.find({ instructor: req.user._id });
+    res.status(200).json(courses);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete course
+export const deleteCourseByTeacher = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+
+    if (!course) return res.status(404).json({ message: "Course not found" });
+    if (String(course.instructor) !== String(req.user._id)) {
+      return res.status(403).json({ message: "Unauthorized: You cannot delete this course" });
+    }
+
+    await Course.findByIdAndDelete(req.params.id);
+
+    // Remove from teacher's list
+    await Teacher.findByIdAndUpdate(req.user._id, {
+      $pull: { courseCreated: course._id },
+    });
+
+    res.status(200).json({ message: "Course deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+///teacher courses all
+export const getTeacherCourses = async (req, res) => {
+  try {
+    const teachers = await Teacher.find()
+      .populate({
+        path: "courseCreated",
+        populate: {
+          path: "instructor",
+          select: "name email", // Optional: show instructor details
+        },
+      })
+      .select("name email courseCreated avatar"); // Adjust what fields you want
+
+    res.status(200).json(teachers);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch teacher courses", error: error.message });
+  }
+};

@@ -1,5 +1,5 @@
 import express from "express"
-import upload from "../utils/multer.js"
+import {upload }from "../utils/multer.js"
 import {uploadAvatar} from "../middlewares/avatar.js"
 import { addEnrollement, avatarController, getAllUsersControllers, getOneUserController, loginUserController, registerUserController, updateUserController } from "../controllers/userController.js";
 

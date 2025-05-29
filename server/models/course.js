@@ -45,7 +45,25 @@ const courseSchema = new mongoose.Schema(
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
         rating: { type: Number, min: 1, max: 5 },
-        Comment: { type: String },
+        comment: { type: String },
+      },
+    ],
+
+    resources: [
+      {
+        type: {
+          type: String,
+          enum: ["pdf", "video", "image"],
+          required: true,
+        },
+        url: {
+          type: String,
+          required: true,
+        },
+        title: {
+          type: String,
+          default: "",
+        },
       },
     ],
   },

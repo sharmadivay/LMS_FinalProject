@@ -5,6 +5,11 @@ import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
+import courseRoute from "./routes/courseRoutes.js";
+
+
+
+
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -21,9 +26,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
+//static files uploads
+app.use("/uploads", express.static("uploads"));
 // routes
 app.use("/api/user",userRoute);
 app.use("/api/teacher",teacherRoute);
+app.use("/api/course",courseRoute);
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -31,3 +41,6 @@ app.listen(PORT, async ()=>{
     await connectDB();
     console.log(`Server is listening at Port : ${PORT}`);
 })
+
+
+

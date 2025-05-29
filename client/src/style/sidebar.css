@@ -1,0 +1,43 @@
+.sidebar {
+  position: fixed;
+  width: 220px;
+  height: 100vh;
+  background-color: #111;
+  color: white;
+  padding-top: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 22px;
+}
+
+.nav-links {
+  list-style: none;
+  padding-left: 0;
+}
+
+.nav-links li {
+  margin: 20px 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: #333;
+  border-radius: 5px;
+}
+
+.nav-links svg {
+  margin-right: 12px;
+  font-size: 18px;
+}

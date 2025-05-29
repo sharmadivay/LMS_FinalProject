@@ -1,5 +1,5 @@
 import { User } from "../models/userModel.js";
-import {Course} from "../models/courseModel.js"
+import {Course} from "../models/course.js"
 import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
 import { generateToken } from "../utils/genrateToken.js";
 
