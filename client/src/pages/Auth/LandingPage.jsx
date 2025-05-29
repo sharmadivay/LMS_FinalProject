@@ -1,4 +1,4 @@
-import logo from "../assets/homeImage.jpg"
+import logo from "../../assets/homeImage.jpg"
 import { Outlet } from "react-router-dom";
 
 const LandingPage = () => {

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
+import getMeRouter from "./routes/getMeRoute.js"
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -14,7 +15,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ Must match exactly
+  origin: "http://localhost:5173", 
   credentials: true
 }));
 app.use(cookieParser());
@@ -24,6 +25,7 @@ app.use(express.urlencoded({extended:true}));
 // routes
 app.use("/api/user",userRoute);
 app.use("/api/teacher",teacherRoute);
+app.use("/api",getMeRouter)
 
 const PORT = process.env.PORT || 8000;
 
