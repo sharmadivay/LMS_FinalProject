@@ -5,6 +5,15 @@ import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
+<<<<<<< HEAD
+import courseRoute from "./routes/courseRoutes.js";
+
+
+
+
+=======
+import getMeRouter from "./routes/getMeRoute.js"
+>>>>>>> a8545431168d6d8f2dd3daf443e16eab0b3b7c99
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -14,16 +23,25 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ Must match exactly
+  origin: "http://localhost:5173", 
   credentials: true
 }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
+//static files uploads
+app.use("/uploads", express.static("uploads"));
 // routes
 app.use("/api/user",userRoute);
 app.use("/api/teacher",teacherRoute);
+<<<<<<< HEAD
+app.use("/api/course",courseRoute);
+
+=======
+app.use("/api",getMeRouter)
+>>>>>>> a8545431168d6d8f2dd3daf443e16eab0b3b7c99
 
 const PORT = process.env.PORT || 8000;
 
@@ -31,3 +49,6 @@ app.listen(PORT, async ()=>{
     await connectDB();
     console.log(`Server is listening at Port : ${PORT}`);
 })
+
+
+

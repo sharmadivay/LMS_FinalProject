@@ -1,5 +1,5 @@
 import { User } from "../models/userModel.js";
-import {Course} from "../models/courseModel.js"
+import {Course} from "../models/course.js"
 import { comparePasswords, hashPassword } from "../utils/passwordProtect.js";
 import { generateToken } from "../utils/genrateToken.js";
 
@@ -10,7 +10,7 @@ export const registerUserController = async (req, res) => {
 
     // validation
     if ((!name || !email || !password)) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "All Fields Are Required",
       });
@@ -20,7 +20,7 @@ export const registerUserController = async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Already Register",
       });
@@ -37,7 +37,7 @@ export const registerUserController = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Created",
       });
@@ -56,7 +56,7 @@ export const registerUserController = async (req, res) => {
     });
   } catch (error) {
     console.log("User Registration Error :", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -70,7 +70,7 @@ export const loginUserController = async (req, res) => {
 
     // validation
     if ((!email ||  !password)) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "All Fields Are Required",
       });
@@ -80,7 +80,7 @@ export const loginUserController = async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Register",
       });
@@ -90,7 +90,7 @@ export const loginUserController = async (req, res) => {
     const checkPassword = await comparePasswords(password, checkUser.password);
 
     if (!checkPassword) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Password Not Match",
       });
@@ -105,7 +105,7 @@ export const loginUserController = async (req, res) => {
     });
   } catch (error) {
     console.log("User Login Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -118,7 +118,7 @@ export const getAllUsersControllers = async (req, res) => {
     const existingUsers = await User.find().select(`-password`);
 
     if (!existingUsers) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "No User Register",
       });
@@ -131,7 +131,7 @@ export const getAllUsersControllers = async (req, res) => {
     });
   } catch (error) {
     console.log("Gel All User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -147,7 +147,7 @@ export const getOneUserController = async (req, res) => {
     const checkUser = await User.findById(id).select(`-password`);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Found",
       });
@@ -160,7 +160,7 @@ export const getOneUserController = async (req, res) => {
     });
   } catch (error) {
     console.log("Get One User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -177,7 +177,7 @@ export const updateUserController = async (req, res) => {
     const checkUser = await User.findById(id);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not Found",
       });
@@ -201,7 +201,7 @@ export const updateUserController = async (req, res) => {
     });
   } catch (error) {
     console.log("Update User Error: ", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal server Error",
     });
@@ -218,7 +218,7 @@ export const avatarController = async (req, res) => {
     const checkUser = await User.findById(id).select(`-password`);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "User Not found",
       });
@@ -235,7 +235,7 @@ export const avatarController = async (req, res) => {
     });
   } catch (error) {
     console.log("Avatar Error", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
@@ -252,7 +252,7 @@ export const addEnrollement = async (req, res) => {
     const checkUser = await User.findById(id).select(`-password`);
 
     if (!checkUser) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "No User Found",
       });
@@ -260,7 +260,7 @@ export const addEnrollement = async (req, res) => {
 
     // Check if course already enrolled
     if (checkUser.enrolledCourses.includes(enrollCourseId)) {
-      return res.status(400).json({
+      return res.json({
         success: false,
         message: "Already Enrolled in this Course",
       });
@@ -281,7 +281,7 @@ export const addEnrollement = async (req, res) => {
     });
   } catch (error) {
     console.log("Add Enrollment Error", error.message || error);
-    res.status(500).json({
+    res.json({
       success: false,
       message: "Internal Server Error",
     });
