@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section brand">
           <h2>YourApp</h2>
-          <p>Empowering your digital journey with modern tools and insights.</p>
+          <p></p>
         </div>
         <div className="footer-section links">
           <h3>Quick Links</h3>

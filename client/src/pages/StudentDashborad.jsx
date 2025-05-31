@@ -1,7 +1,7 @@
 //view enrolled course,cancel course
 import React, { useEffect, useState } from "react";
 import API from "../api/api";
-import "../styles/StudentDashboard.css";
+import "../style/StudentDashboard.css";
 
 const StudentDashboard = () => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);

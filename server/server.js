@@ -5,15 +5,12 @@ import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
-<<<<<<< HEAD
 import courseRoute from "./routes/courseRoutes.js";
 
 
 
 
-=======
 import getMeRouter from "./routes/getMeRoute.js"
->>>>>>> a8545431168d6d8f2dd3daf443e16eab0b3b7c99
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -36,12 +33,9 @@ app.use("/uploads", express.static("uploads"));
 // routes
 app.use("/api/user",userRoute);
 app.use("/api/teacher",teacherRoute);
-<<<<<<< HEAD
 app.use("/api/course",courseRoute);
 
-=======
 app.use("/api",getMeRouter)
->>>>>>> a8545431168d6d8f2dd3daf443e16eab0b3b7c99
 
 const PORT = process.env.PORT || 8000;
 
