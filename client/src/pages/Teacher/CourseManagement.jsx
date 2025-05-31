@@ -1,112 +1,110 @@
-import React, { useEffect, useState } from "react";
- import axios from "axios";
-  import { motion } from "framer-motion";
-   import { FaTrash, FaEdit, FaUsers, FaEye, FaSearch } from "react-icons/fa";
+ import React, { useEffect, useState } from "react";
+  //import Sidebar from "../components/Sidebar";
    import TeacherNavbar from "../../components/Teachers/TeacherNavbar";
-   import Footer from "../../components/Footer";
+    import Footer from "../../components/Footer";
+     import axios from "axios"; import { motion } from "framer-motion";
 
-const ManageCourses = () => { const [courses, setCourses] = useState([]);
-       const [selectedCourse, setSelectedCourse] = useState(null);
-        const [students, setStudents] = useState([]);
-         const [searchTerm, setSearchTerm] = useState("");
-          const [sortField, setSortField] = useState("title");
-           const [sortOrder, setSortOrder] = useState("asc");
+const ManageCourses = () => { const [courses, setCourses] =
+   useState([]);
+    const [selectedCourse, setSelectedCourse] = 
+    useState(null);
+     const [students, setStudents] = 
+     useState([]);
+      const [showStudents, setShowStudents] =
+       useState(false);
 
-const fetchCourses = async () => { try { const res = await axios.get("http://localhost:8080/api/teacher/courses");
-       setCourses(res.data); } catch (err) { console.error(err); } 
-      };
+useEffect(() => { 
+  const fetchCourses = async () =>
+     { 
+      try { 
+        const token = localStorage.getItem("token");
+         const res = await axios.get("/api/teacher/courses", 
+          { headers: { Authorization:` Bearer ${token}`, },
+         });
+          setCourses(res.data);
+         } catch (error)
+          { console.error("Error fetching courses:", error); 
 
-const fetchStudents = async (courseId) => { try { const res = await axios.get(`http://localhost:8082/api/teacher/course/${courseId}/students`); 
-      setStudents(res.data); setSelectedCourse(courseId); } catch (err) { console.error(err); } };
+          } };
+           fetchCourses(); }, []);
 
-const deleteCourse = async (courseId) => { try { await axios.delete(`http://localhost:8080/api/teacher/course/${courseId}`);
-       fetchCourses();
-       } catch (err) { console.error(err);
+const handleDelete = async (courseId) =>
+   { 
+    try { const token = localStorage.getItem("token");
+       await axios.delete(//delete course api}, 
+        { headers: { Authorization: `Bearer ${token}`, 
+         }, 
+         }); 
+         setCourses(courses.filter((course) => 
+          course._id !== courseId));
+         } catch (error) { console.error("Error deleting course:", error); } };
 
-        }
-       };
+const handleViewStudents = async (courseId) =>
+   { try { const token = localStorage.getItem("token");
+     const res = await axios.get((`/api/teacher/course/${courseId}/students`), 
+      { headers: { Authorization:` Bearer ${token}`, }, }); 
+      setStudents(res.data); setSelectedCourse(courseId); 
+      setShowStudents(true); } catch  { console.error("Error fetching students:", error); } };
 
-const handleSort = (field) => { const order = field === sortField && sortOrder === "asc" ? "desc" : "asc"; 
-      setSortField(field);
-       setSortOrder(order);
-       };
+return ( <
+  div className="flex min-h-screen bg-gray-50">
+    // Sidebar
+   <div className="flex flex-col flex-1"> 
+   <TeacherNavbar /> 
+   <main className="p-6"> <h1 className="text-3xl font-bold mb-6">Manage Your Courses</h1>
 
-const sortedCourses = [...courses] .filter((c) =>
-       c.title.toLowerCase().includes(searchTerm.toLowerCase()) || c.category.toLowerCase().includes(searchTerm.toLowerCase())
- 
-)
- .sort((a, b) =>
-       { if (sortOrder === "asc") return a[sortField].localeCompare(b[sortField]);
-             return b[sortField].localeCompare(a[sortField]); 
-            }
-      );
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <motion.div
+            key={course._id}
+            className="bg-white rounded-xl shadow p-5 relative"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
+            <p className="text-gray-600 mb-2">{course.description}</p>
+            <p className="text-sm text-gray-500 mb-4">
+              {course.isPaid ? Paid - `₹${course.price}` : "Free"}
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleViewStudents(course._id)}
+                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                View Students
+              </button>
+              <button
+                onClick={() => handleDelete(course._id)}
+                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
-useEffect(() => { fetchCourses(); }, []);
-
-return (
-
-      
-<div className="p-6">
-      <TeacherNavbar/>
-       <div className="flex justify-between items-center mb-6">
-            
-             <h2 className="text-3xl font-semibold text-gray-800">Manage Courses</h2> 
-             <div className="flex gap-2"> 
-                  <input type="text" placeholder="Search courses..." className="px-4 py-2 border rounded shadow" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                   </div>
-                    </div>
-
-<table className="w-full table-auto border shadow-md rounded overflow-hidden">
-    <thead className="bg-gray-100">
-      <tr>
-        <th onClick={() => handleSort("title")} className="cursor-pointer px-4 py-2">Title</th>
-        <th onClick={() => handleSort("category")} className="cursor-pointer px-4 py-2">Category</th>
-        <th className="px-4 py-2">Price</th>
-        <th className="px-4 py-2">Actions</th>
-        <th className="px-4 py-2">Students</th>
-      </tr>
-    </thead>
-    <tbody>
-      {sortedCourses.map((course) => (
-        <tr key={course.id} className="hover:bg-gray-50">
-          <td className="px-4 py-2">{course.title}</td>
-          <td className="px-4 py-2">{course.category}</td>
-          <td className="px-4 py-2">{course.isFree ? "Free" : `${course.price}`}</td>
-          <td className="px-4 py-2 flex gap-2">
-            <button className="text-blue-500"><FaEdit /></button>
-            <button onClick={() => deleteCourse(course.id)} className="text-red-500"><FaTrash /></button>
-          </td>
-          <td className="px-4 py-2">
-            <button onClick={() => fetchStudents(course.id)} className="text-green-500 flex items-center gap-1">
-              <FaUsers /> View
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-
-  {selectedCourse && (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mt-6 p-4 border rounded shadow-md bg-white"
-    >
-      <h3 className="text-xl font-bold mb-4">Enrolled Students</h3>
-      {students.length === 0 ? (
-        <p className="text-gray-500">No students enrolled in this course yet.</p>
-      ) : (
-        <ul className="list-disc pl-5 space-y-2">
-          {students.map((student) => (
-            <li key={student.id} className="text-gray-700">
-              {student.name} ({student.email})
-            </li>
-          ))}
-        </ul>
+      {showStudents && (
+        <div className="mt-8 bg-white rounded-xl shadow p-6">
+          <h2 className="text-2xl font-bold mb-4">Enrolled Students</h2>
+          <ul className="space-y-2">
+            {students.map((student) => (
+              <li key={student._id} className="border-b py-2">
+                {student.name} ({student.email})
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={() => setShowStudents(false)}
+            className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+          >
+            Close
+          </button>
+        </div>
       )}
-    </motion.div>
-  )}
-  <footer/>
+    </main>
+    <Footer />
+  </div>
 </div>
 
 ); };

@@ -6,16 +6,14 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-section brand">
-          <h2>YourApp</h2>
+          <h2></h2>
           <p></p>
         </div>
         <div className="footer-section links">
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/features">Features</a></li>
-            <li><a href="/pricing">Pricing</a></li>
-            <li><a href="/contact">Contact</a></li>
+            
           </ul>
         </div>
         <div className="footer-section social">
