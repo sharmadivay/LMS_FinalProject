@@ -5,12 +5,16 @@ import cookieParser from "cookie-parser";
 // routes
 import userRoute from "./routes/userRoutes.js"
 import teacherRoute from "./routes/teacherRoutes.js"
+
 import courseRoute from "./routes/courseRoutes.js";
 
 
 
 
 import getMeRouter from "./routes/getMeRoute.js"
+
+import getMeRouter from "./routes/getMeRoute.js"
+ 
 
 // db
 import connectDB from "./db/connectDB.js";
@@ -36,6 +40,12 @@ app.use("/api/teacher",teacherRoute);
 app.use("/api/course",courseRoute);
 
 app.use("/api",getMeRouter)
+
+app.use("/api/course",courseRoute);
+
+
+app.use("/api",getMeRouter)
+
 
 const PORT = process.env.PORT || 8000;
 
