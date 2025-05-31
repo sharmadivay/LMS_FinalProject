@@ -13,13 +13,14 @@ import Register from "./pages/Auth/Register.jsx";
 // import StudentSidebar from "./components/Student/StudentSidebar.jsx";
 // import TeacherSidebar from "./components/teachers/TeacherSideBar.jsx";
 // import MyCourses from "./pages/Sutdents/StudentCouse.jsx";
-// import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
-import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
-import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
+// import AllCoursess from "./pages/Sutdents/AvaiableCoursefostudents.jsx";
+import StudentWelcome from "./pages/Sutdents/StudentHome.jsx";
+// import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
+// import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
   return (
     //<div><TeacherDashboard/></div>
-    <div><TeacherWelcome/></div>
+    <div><StudentWelcome/></div>
   );
 };
 
