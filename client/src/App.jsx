@@ -15,13 +15,28 @@ import Register from "./pages/Auth/Register.jsx";
 // import MyCourses from "./pages/Sutdents/StudentCouse.jsx";
 // import AllCoursess from "./pages/Sutdents/AvaiableCoursefostudents.jsx";
 import StudentWelcome from "./pages/Sutdents/StudentHome.jsx";
+import Home from "./pages/Dashboard/Home.jsx";
 // import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
   return (
-    //<div><TeacherDashboard/></div>
-    <div><StudentWelcome/></div>
-  );
+    <>
+      <Toaster/>
+        <Routes>
+          <Route path="/" element={<Login/>}/>
+          <Route path="/" element={<LandingPage/>}>
+           <Route index element={<Login />} />
+          <Route path="login" element = {<Login/>}/>
+          <Route path="register" element = {<Register/>}/>
+          </Route>
+
+          <Route path="/home" element={Home}/>
+
+          {/* <Route path="/student" element={<StudentWelcome/>}/> */}
+        </Routes>
+
+    </>
+  )
 };
 
 
