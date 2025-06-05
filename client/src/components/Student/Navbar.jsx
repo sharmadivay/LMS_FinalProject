@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaPowerOff } from "react-icons/fa";
 
 const Navbar = ({user}) => {
@@ -6,9 +6,11 @@ const Navbar = ({user}) => {
         "https://res.cloudinary.com/duecnsulw/image/upload/v1748502713/wa8tmkxplsd0kgzw478b.avif"
       );
       const { name, email, avatar } = user;
-      if (avatar != "") {
-        setCheckAvatar(avatar);
-      }
+      useEffect(() => {
+          if (avatar !== "") {
+            setCheckAvatar(avatar);
+          }
+        }, []); 
   return (
     <div className='flex items-center space-x-2 justify-end  p-2'>
        <img src={checkAvatar} alt="Profile" className='h-10 w-10 rounded-full'/>
