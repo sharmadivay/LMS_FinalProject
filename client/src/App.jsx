@@ -15,6 +15,7 @@ import Register from "./pages/Auth/Register.jsx";
 // import MyCourses from "./pages/Sutdents/StudentCouse.jsx";
 // import AllCoursess from "./pages/Sutdents/AvaiableCoursefostudents.jsx";
 import StudentWelcome from "./pages/Sutdents/StudentHome.jsx";
+import Home from "./pages/Dashboard/Home.jsx";
 // import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
@@ -29,7 +30,9 @@ function App() {
           <Route path="register" element = {<Register/>}/>
           </Route>
 
-          <Route path="/student" element={<StudentWelcome/>}/>
+          <Route path="/home" element={Home}/>
+
+          {/* <Route path="/student" element={<StudentWelcome/>}/> */}
         </Routes>
 
     </>

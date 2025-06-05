@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { getMe } from "../../hooks/getMe.js"
-import StudentPage from "./StudentPage.jsx"
 import TeacherPage from "./TeacherPage.jsx"
 import { useNavigate } from "react-router-dom"
+import StudentWelcome from "../Sutdents/StudentHome.jsx"
 const Home =  () => {
   const [user,SetUser] = useState("")
   const [role,setRole] = useState("")
@@ -25,7 +25,7 @@ const Home =  () => {
   return (
     <div>
         
-        {role == "student" && <StudentPage user={user}/>}
+        {role == "student" && <StudentWelcome user={user}/>}
         {role == "teacher" && <TeacherPage user={user}/>}
     </div>
   )
