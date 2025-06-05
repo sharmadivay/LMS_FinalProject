@@ -19,9 +19,21 @@ import StudentWelcome from "./pages/Sutdents/StudentHome.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
   return (
-    //<div><TeacherDashboard/></div>
-    <div><StudentWelcome/></div>
-  );
+    <>
+      <Toaster/>
+        <Routes>
+          <Route path="/" element={<Login/>}/>
+          <Route path="/" element={<LandingPage/>}>
+           <Route index element={<Login />} />
+          <Route path="login" element = {<Login/>}/>
+          <Route path="register" element = {<Register/>}/>
+          </Route>
+
+          <Route path="/student" element={<StudentWelcome/>}/>
+        </Routes>
+
+    </>
+  )
 };
 
 

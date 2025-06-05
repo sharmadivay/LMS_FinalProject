@@ -32,7 +32,7 @@ const Login = () => {
    
     if (res.success) {
       toast.success(res.message);
-      naviagate("/home")
+      naviagate("/student")
     } else {
       toast.error(res.message);
     }
