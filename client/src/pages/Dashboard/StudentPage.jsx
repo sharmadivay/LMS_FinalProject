@@ -7,7 +7,9 @@ import {
   FiHome,
   FiPlayCircle,
   FiBookOpen,
-  FiSearch
+  FiSearch,
+  FiSettings,
+  FiShoppingCart
 } from "react-icons/fi";
 
 import { FiLogOut } from "react-icons/fi";
@@ -28,6 +30,10 @@ const StudentPage = () => {
     { label: "Home", icon: <FiHome size={20} /> , route : "/student" },
     { label: "My Learning", icon: <FiBookOpen size={20}  /> , route: "/student/courses"},
     { label: "All Courses", icon: <FiPlayCircle size={20} />  , route: "/student/allcourses"},
+    { label: "Cart", icon: <FiShoppingCart size={20} />  , route: "/student/profile"},
+     { label: "Settings", icon: <FiSettings size={20} />  , route: "/student/profile"},
+     
+     
   ];
 
   useEffect(() => {
@@ -54,7 +60,7 @@ const StudentPage = () => {
       {/* Sidebar */}
       <div className=" relative w-[250px] min-h-screen p-6 bg-[#F9FAFB]">
         {/* Profile Section */}
-        <NavLink to="/student/profile" className="flex items-center space-x-3 mb-10 cursor-pointer" >
+        <NavLink to="/student" className="flex items-center space-x-3 mb-10 cursor-pointer" >
           <img
             src={user.avatar}
             alt="avatar"
