@@ -7,13 +7,11 @@ import Register from "./pages/Auth/Register.jsx";
 
 import Home from "./pages/Dashboard/Home.jsx";
 import StudentMainCard from "./pages/Sutdents/StudentMainCard.jsx";
-import StudentDashboard from "./pages/Sutdents/Studentsdashboard.jsx";
 import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
-import Profile from "./pages/Sutdents/StudentProfile.jsx";
 import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
-import ProfilePage from "./pages/Dashboard/StudentPage.jsx";
 import StudentPage from "./pages/Dashboard/StudentPage.jsx";
 import StudentProfile from "./pages/Sutdents/StudentProfile.jsx";
+import StudentHome from "./pages/Sutdents/StudentHome.jsx";
 // import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
@@ -32,7 +30,7 @@ function App() {
 
          {/* student */}
          <Route path="/student" element={<StudentPage/>}>
-          <Route index element={<StudentMainCard />} />
+          <Route index element={<StudentHome />} />
           <Route path="profile" element={<StudentProfile/>}/>
           <Route path="allcourses" element={<AllCoursess/>}/>
           <Route path="courses" element={<StudentCouse/>}/>
