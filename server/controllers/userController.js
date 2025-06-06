@@ -34,7 +34,8 @@ export const registerUserController = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-    });
+      avatar: "https://res.cloudinary.com/duecnsulw/image/upload/v1748502713/wa8tmkxplsd0kgzw478b.avif"
+    }); 
 
     if (!user) {
       return res.json({
