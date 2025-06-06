@@ -6,10 +6,10 @@ import { generateToken } from "../utils/genrateToken.js";
 // register user
 export const registerUserController = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password , phone } = req.body;
 
     // validation
-    if ((!name || !email || !password)) {
+    if ((!name || !email || !password || !phone)) {
       return res.json({
         success: false,
         message: "All Fields Are Required",
@@ -33,6 +33,7 @@ export const registerUserController = async (req, res) => {
     const user = new User({
       name,
       email,
+      phone,
       password: hashedPassword,
       avatar: "https://res.cloudinary.com/duecnsulw/image/upload/v1748502713/wa8tmkxplsd0kgzw478b.avif"
     }); 

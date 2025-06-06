@@ -7,13 +7,14 @@ const userUrl = "http://localhost:8082/api/user";
 
 export const registerUser = async (data) => {
   try {
-    const { name, email, password } = data;
+    const { name, email, password , phone } = data;
     const res = await axios.post(
       `${userUrl}/register-user`,
       {
         name,
         email,
         password,
+        phone
       },
       { withCredentials: true }
     );

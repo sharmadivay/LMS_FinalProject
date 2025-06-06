@@ -1,18 +1,25 @@
 import { useState } from "react";
-import { registerUser} from "../../hooks/users.js";
+import { registerUser } from "../../hooks/users.js";
 import { registerTeacher } from "../../hooks/teachers.js";
 import toast from "react-hot-toast";
-import { Link  , useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-
-import {FiUser ,  FiLock , FiMail , FiEye, FiEyeOff} from 'react-icons/fi';
+import {
+  FiUser,
+  FiLock,
+  FiMail,
+  FiEye,
+  FiEyeOff,
+  FiPhone,
+} from "react-icons/fi";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,39 +28,39 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(password != confirmPassword){
-     toast.error("Password Not Matched");
-     return
+    if (password != confirmPassword) {
+      toast.error("Password Not Matched");
+      return;
     }
     const user = {
       name,
       email,
       password,
+      phone
     };
     let res = "";
 
     if (role == "student") {
       res = await registerUser(user);
-      
     } else {
       res = await registerTeacher(user);
     }
 
     if (res.success) {
       toast.success(res.message);
-      navigate("/home")
+      navigate("/home");
     } else {
       toast.error(res.message);
     }
   };
 
-  const handleToggle = () =>{
-    setShowPassword(!showPassword)
-  }
+  const handleToggle = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="flex flex-col  justify-center items-start w-full h-full rounded-l-xl space-y-4 bg-[#fffefe] px-10">
-      <div >
+      <div>
         <h3 className="text-2xl">Register now</h3>
         <p>
           You already have an account
@@ -92,7 +99,7 @@ const Register = () => {
           <div className="flex flex-col w-full">
             <label htmlFor="name">Name </label>
             <div className="flex items-center  border rounded-xl bg-[#FAFCFE]">
-              <FiUser  size={20} className="ml-2" />
+              <FiUser size={20} className="ml-2" />
               <input
                 type="name"
                 name="name"
@@ -128,11 +135,30 @@ const Register = () => {
             </div>
           </div>
 
+          {/* phone */}
+          <div className="flex flex-col">
+            <label htmlFor="phome">Phone </label>
+            <div className="flex items-center  border rounded-xl bg-[#FAFCFE]">
+              <FiPhone size={20} className="ml-2" />
+              <input
+                type="phone"
+                name="phone"
+                id="phone"
+                required
+                value={phone}
+                placeholder="Enter Your Number"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+                className="px-3 py-2 w-full focus:outline-none focus:ring-0 hover:border-none "
+              />
+            </div>
+          </div>
           {/* password */}
           <div className="flex flex-col">
             <label htmlFor="password">Password</label>
             <div className="flex items-center  border rounded-xl bg-[#FAFCFE]">
-              < FiLock  size={20} className="ml-2" />
+              <FiLock size={20} className="ml-2" />
 
               <input
                 type="password"
@@ -153,10 +179,10 @@ const Register = () => {
           <div className="flex flex-col">
             <label htmlFor="conPassword">Confirm Password</label>
             <div className="flex items-center  border rounded-xl bg-[#FAFCFE]">
-              < FiLock  size={20} className="ml-2" />
+              <FiLock size={20} className="ml-2" />
 
               <input
-                type={showPassword?"text":"password"}
+                type={showPassword ? "text" : "password"}
                 name="conPassword"
                 id="conPassword"
                 value={confirmPassword}
@@ -167,11 +193,14 @@ const Register = () => {
                 }}
                 className=" px-3 py-2 w-full focus:outline-none focus:ring-0 hover:border-none"
               />
-              {
-                showPassword? <FiEyeOff onClick={handleToggle} size={20} className="mr-2"/> : <FiEye size={20} onClick={handleToggle} className="mr-2"/>
-              }
+              {showPassword ? (
+                <FiEyeOff onClick={handleToggle} size={20} className="mr-2" />
+              ) : (
+                <FiEye size={20} onClick={handleToggle} className="mr-2" />
+              )}
             </div>
           </div>
+
           <button
             type="submit"
             className=" w-full border rounded-full bg-[#1a1a1b] text-lg text-[#dbdbdb] py-3 cursor-pointer "
