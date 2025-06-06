@@ -4,7 +4,6 @@ import { loginTeacher } from "../../hooks/teachers.js";
 import {Link, useNavigate} from "react-router-dom"
 import toast from "react-hot-toast";
 
-import { MdEmail } from "react-icons/md"; 
 import {FiUser ,  FiLock , FiMail , FiEye, FiEyeOff} from 'react-icons/fi';
 
 const Login = () => {
@@ -43,8 +42,8 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full h-full bg-[#fffefe] text-[#121312] ">
-      <div className=" flex flex-col  justify-center items-start w-full h-full rounded-l-xl space-y-4 bg-[#fffefe] px-10">
+    <div className="w-full h-full bg-[#fffefe] text-[#121312] rounded-l-xl ">
+      <div className=" flex flex-col  justify-center items-start w-full h-full rounded-l-xl  space-y-4 bg-[#fffefe] px-10">
 
       <div>
       <h2 className="text-2xl">Lets Sign you in </h2>

@@ -1,75 +1,100 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../components/Student/navbar";
-
+import { getMe } from "../../hooks/getMe";
+import { Outlet, useNavigate , NavLink } from "react-router-dom";
+import toast from "react-hot-toast";
+import { logout } from "../../hooks/getMe";
 import {
-  PiSquaresFourBold,
-  PiSparkleBold,
-  PiBookOpenBold,
-  PiHeartBold,
-  PiUserFocusBold,
-  PiMonitorBold,
-  PiLightningBold,
-  PiCaretDownBold,
-  PiCaretUpBold,
-} from "react-icons/pi";
+  FiHome,
+  FiPlayCircle,
+  FiBookOpen,
+  FiSearch
+} from "react-icons/fi";
 
-import { FiSearch } from "react-icons/fi"
+import { FiLogOut } from "react-icons/fi";
 
-const StudentPage = ({ user }) => {
-   const [showCourses, setShowCourses] = useState(false);
-  
+const StudentPage = () => {
+  const [user, setUser] = useState({});
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogout = async () =>{
+    await logout()
+    navigate("/")
+  }
+
+
+
+  const navItems = [
+    { label: "Home", icon: <FiHome size={20} /> , route : "/student" },
+    { label: "My Learning", icon: <FiBookOpen size={20}  /> , route: "/student/courses"},
+    { label: "All Courses", icon: <FiPlayCircle size={20} />  , route: "/student/allcourses"},
+  ];
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getMe();
+        if (res.success) {
+          setUser(res.user);
+          setRole(res.role);
+        } else {
+          toast.error(res.message);
+          navigate("/");
+        }
+      } catch (error) {
+        navigate("/");
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   return (
-    <div className="flex w-full h-[100vh] px-10 py-10 bg-[#c7d2f3]">
-      <div className="w-full p-4 rounded-xl bg-[rgb(245,246,250,0.5)]">
-        <div className=" flex w-full h-full rounded-xl bg-[#fffefe]">
-
-          {/* Sidebar */}
-          <div className="w-[20%] h-full border-r">
-            <div className="border-b h-[60px] flex items-center  font-bold">
-              <img
-                src="https://res.cloudinary.com/duecnsulw/image/upload/v1748505977/zftayazwswtvuohefhb2.jpg"
-                alt="image"
-                className="h-12 w-12 rounded-full ml-8"
-              />
-              <p>Personal-LMS</p>
-            </div>
-            <ul className="flex flex-col ml-16 mt-4 space-y-4 cursor-pointer">
-              <li className="flex items-center p-x-4">  <PiSquaresFourBold className="mr-2" /> Overview </li>
-              <li className="flex flex-col " onClick={()=> setShowCourses(!showCourses)}>  <div className="flex items-center ">
-                <PiSparkleBold className="mr-2"/> <span className="mr-2">Courses</span> {showCourses ? <PiCaretUpBold /> : <PiCaretDownBold />}
-              </div>
-               {showCourses && (
-            <ul className="pl-6 mt-1 space-y-1 text-gray-500">
-              <li className="flex items-center gap-2 hover:text-black cursor-pointer">
-                <PiBookOpenBold />
-                Top course
-              </li>
-              <li className="flex items-center gap-2 hover:text-black cursor-pointer">
-                <PiHeartBold />
-                Heart course
-              </li>
-              <li className="flex items-center gap-2 hover:text-black cursor-pointer">
-                <PiUserFocusBold />
-                Chest course
-              </li>
-            </ul>
-          )}
-          </li>
-              <li className="flex items-center p-x-4">   <PiMonitorBold  className="mr-2"/> My Courses</li>
-              <li className="flex items-center p-x-4">  <PiLightningBold  className="mr-2"/> Learning Progress</li>
-            </ul>
+    <div className="bg-[#F9FAFB] min-h-screen w-full flex">
+      {/* Sidebar */}
+      <div className=" relative w-[250px] min-h-screen p-6 bg-[#F9FAFB]">
+        {/* Profile Section */}
+        <NavLink to="/student/profile" className="flex items-center space-x-3 mb-10 cursor-pointer" >
+          <img
+            src={user.avatar}
+            alt="avatar"
+            className="h-12 w-12 rounded-full object-cover"
+          />
+          <div>
+            <h3 className="text-md font-semibold">{user.name || "Emily Wong"}</h3>
+            <p className="text-sm text-gray-500">{role || "Student"}</p>
           </div>
+        </NavLink>
 
-          {/* right part  */}
-          <div className="w-[80%]">
-            <div className="h-[60px] border-b">
-              <Navbar user={user} />
-            </div>
-            <div className="bg-[#FEFBF9] h-[calc(100%-60px)]">
-              <div className="flex items-center bg-[#F3F0EE] rounded-full w-60 mt-4 ml-4"> <FiSearch className="ml-4" size={20}/> <input type="text" placeholder="Search" className="px-1 py-2 focus:outline-none focus:ring-0 hover:border-none" /></div>
-            </div>
-          </div>
+        {/* Navigation */}
+        <div className="space-y-4">
+          {navItems.map(({ label, icon , route}) => (
+            <NavLink
+              key={label}
+              to= {route}
+              end={route === "/student"}
+              className={({isActive})=>`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium cursor-pointer ${
+                isActive
+                  ? "bg-gray-100 text-black"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {icon}
+              <span>{label}</span>
+            </NavLink>
+          ))}
         </div>
+
+        {/* Admin Link */}
+        <div className="absolute bottom-10 left-6  flex items-center gap-2 text-sm text-gray-500 cursor-pointer" onClick={handleLogout}>
+          <FiLogOut size={24} />
+          <span className="text-lg">Logout</span>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className=" bg-[#F9FAFB] flex-1 p-10">   
+          <Outlet />
       </div>
     </div>
   );

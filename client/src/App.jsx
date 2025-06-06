@@ -19,8 +19,11 @@ import Home from "./pages/Dashboard/Home.jsx";
 import StudentMainCard from "./pages/Sutdents/StudentMainCard.jsx";
 import StudentDashboard from "./pages/Sutdents/Studentsdashboard.jsx";
 import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
-import Profile from "./pages/Sutdents/profile.jsx";
+import Profile from "./pages/Sutdents/StudentProfile.jsx";
 import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
+import ProfilePage from "./pages/Dashboard/StudentPage.jsx";
+import StudentPage from "./pages/Dashboard/StudentPage.jsx";
+import StudentProfile from "./pages/Sutdents/StudentProfile.jsx";
 // import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
@@ -28,21 +31,19 @@ function App() {
     <>
       <Toaster/>
         <Routes>
-          <Route path="/" element={<Login/>}/>
+          <Route path="/" element={<LandingPage/>}/>
           <Route path="/" element={<LandingPage/>}>
            <Route index element={<Login />} />
           <Route path="login" element = {<Login/>}/>
           <Route path="register" element = {<Register/>}/>
           </Route>
 
-          <Route path="/home" element={<Home/>}/>
+          <Route path="/home" element={<ProfilePage/>}/>
 
          {/* student */}
-         <Route path="/student" element={<StudentWelcome/>}>
+         <Route path="/student" element={<StudentPage/>}>
           <Route index element={<StudentMainCard />} />
-          <Route path="welcome" element={<StudentMainCard/>}/>
-          <Route path="profile" element={<Profile/>}/>
-          <Route path="dashboard" element={<StudentDashboard/>}/>
+          <Route path="profile" element={<StudentProfile/>}/>
           <Route path="allcourses" element={<AllCoursess/>}/>
           <Route path="courses" element={<StudentCouse/>}/>
 
