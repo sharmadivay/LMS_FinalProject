@@ -13,7 +13,7 @@ import courseRoute from "./routes/courseRoutes.js";
 
 import getMeRouter from "./routes/getMeRoute.js"
 
-import getMeRouter from "./routes/getMeRoute.js"
+
  
 
 // db
