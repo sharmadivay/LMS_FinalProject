@@ -18,3 +18,12 @@ export const getMeController = async (req,res) => {
         })
     }
 }
+
+export const logoutController = (req, res) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.json({ message: "Logged Out Successfully" });
+  } catch (err) {
+    res.status(500).json("Internal Server Error");
+  }
+};

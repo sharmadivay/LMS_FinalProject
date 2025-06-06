@@ -25,6 +25,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    gender: {
+      type: String,
+      default: "Male",
+      enum: ["Male" , "Female", "Other"]
+    },
+    country:{
+      type: String,
+      default: "India"
+    },
 
     enrolledCourses: [{
       type : mongoose.Schema.Types.ObjectId,

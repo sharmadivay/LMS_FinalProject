@@ -44,10 +44,9 @@ if (loading)
   </div>;
 
 return ( 
-<div className="flex min-h-screen bg-gray-50"> 
-      <Sidebar role="student" /> 
-      <div className="flex-1 flex flex-col">
-             <StudentNavbar />
+<div className="flex min-h-full min-w-full  bg-gray-50"> 
+      <div className="flex-1  min-h-full min-w-full  flex flex-col">
+           
  <main className="flex-1 p-6 overflow-y-auto"> 
       <motion.div className="bg-white rounded-xl shadow-lg p-8 mb-6" 
       initial={{ opacity: 0, y: -20 }}
@@ -55,33 +54,8 @@ return (
        transition={{ duration: 0.6 }} >
              <h1 className="text-3xl font-bold mb-2 text-indigo-700"> Welcome, {studentData?.name || 'Student'} 🎓 </h1> <p className="text-gray-500 text-lg italic">{quote}</p> </motion.div>
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <motion.div 
-          className="bg-gradient-to-r from-green-400 to-blue-500 p-6 rounded-xl shadow text-white" 
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-bold">Enrolled Courses</h2>
-          <p className="text-3xl mt-2">{studentData?.enrolledCourses?.length || 0}</p>
-        </motion.div>
 
-        <motion.div 
-          className="bg-gradient-to-r from-purple-400 to-pink-500 p-6 rounded-xl shadow text-white" 
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-bold">Account Created</h2>
-          <p className="text-lg mt-2">{new Date(studentData?.createdAt).toDateString()}</p>
-        </motion.div>
-
-        <motion.div 
-          className="bg-gradient-to-r from-yellow-400 to-orange-500 p-6 rounded-xl shadow text-white" 
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-bold">Total Progress</h2>
-          <p className="text-3xl mt-2">{Math.floor(Math.random() * 100)}%</p>
-        </motion.div>
-      </div>
     </main>
-    <Footer/>
   </div>
 </div>
 

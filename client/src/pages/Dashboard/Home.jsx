@@ -25,8 +25,8 @@ const Home =  () => {
   return (
     <div>
         
-        {role == "student" && <StudentWelcome user={user}/>}
-        {role == "teacher" && <TeacherPage user={user}/>}
+        {role == "student" && navigate("/student")}
+        {role == "teacher" &&  navigate("/teacher")}
     </div>
   )
 }
