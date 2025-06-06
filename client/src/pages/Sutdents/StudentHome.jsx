@@ -12,7 +12,7 @@ const StudentHome = () => {
         />
         <div className="z-10 max-w-md">
           <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
-            Welcome to EduPath
+            Welcome to NextPath
           </h1>
           <p className="text-gray-600 mb-6">
             Explore a wide range of courses and enhance your skills with expert
