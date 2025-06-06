@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { getMe } from "../../hooks/getMe.js"
 import TeacherPage from "./TeacherPage.jsx"
 import { useNavigate } from "react-router-dom"
-import StudentWelcome from "../Sutdents/StudentHome.jsx"
 const Home =  () => {
   const [user,SetUser] = useState("")
   const [role,setRole] = useState("")
