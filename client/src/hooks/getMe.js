@@ -14,3 +14,16 @@ export const getMe = async () => {
         toast.error(`${error}`)
     }
 }
+
+export const logout = async () =>{
+    try {
+        const res = await axios.get(`${url}/logout`,{
+            withCredentials: true
+        })
+
+        return res.data
+        
+    } catch (error) {
+        toast.error(`${error}`)
+    }
+}

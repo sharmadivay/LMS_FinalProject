@@ -288,3 +288,6 @@ export const addEnrollement = async (req, res) => {
     });
   }
 };
+
+// logout 
+

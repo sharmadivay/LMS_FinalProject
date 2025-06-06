@@ -20,6 +20,7 @@ import StudentMainCard from "./pages/Sutdents/StudentMainCard.jsx";
 import StudentDashboard from "./pages/Sutdents/Studentsdashboard.jsx";
 import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
 import Profile from "./pages/Sutdents/profile.jsx";
+import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
 // import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
 // import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
 function App() {
@@ -42,7 +43,8 @@ function App() {
           <Route path="welcome" element={<StudentMainCard/>}/>
           <Route path="profile" element={<Profile/>}/>
           <Route path="dashboard" element={<StudentDashboard/>}/>
-          <Route path="allcourses" element={<StudentCouse/>}/>
+          <Route path="allcourses" element={<AllCoursess/>}/>
+          <Route path="courses" element={<StudentCouse/>}/>
 
           </Route>
           

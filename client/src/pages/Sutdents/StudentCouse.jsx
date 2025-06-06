@@ -5,65 +5,72 @@ import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
 
 const MyCourses = () => {
-  const [courses, setCourses] = useState([
+ const courses = [
     {
       id: 1,
-      title: "Full Stack Development",
+      title: "React for Beginners",
+      description: "Learn the basics of React.js with hands-on projects.",
+      thumbnail: "https://res.cloudinary.com/duecnsulw/image/upload/v1724299539/masg1r0mw8shrnkfbio6.png",
       instructor: "John Doe",
-      price: "Free",
-      enrolledDate: "2025-05-01",
+      category: "Web Development",
+      price: 49.99,
+      rating: 4.5,
     },
     {
       id: 2,
-      title: "Introduction to Python",
+      title: "Advanced Node.js",
+      description: "Master backend development with Node.js.",
+      thumbnail: "https://res.cloudinary.com/duecnsulw/image/upload/v1747845352/avatars/bjrcxkpyv6ln5usnu9yu.jpg",
       instructor: "Jane Smith",
-      price: "₹499",
-      enrolledDate: "2025-05-05",
+      category: "Backend",
+      price: 59.99,
+      rating: 4.7,
     },
-  ]);
+    // Add more courses as needed
+  ];
 
   // useEffect(() => { //   fetch('http://localhost:8080/api/student/my-courses') //
   //   .then(res => res.json()) //     .then(data => setCourses(data)) //
   //  .catch(err => console.error(err)); // }, []);
 
   return (
-    <div className="flex  bg-gray-10">
-      <div className="flex-1 flex flex-col">
-        <main className="flex-1 p-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white p-6 rounded-xl shadow-xl"
+    <div className="min-w-full min-h-full bg-transparent p-6">
+      <h2 className="text-2xl font-bold mb-4">My Courses</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {courses.map((course) => (
+          <div
+            key={course.id}
+            className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-200"
           >
-            <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              My Courses
-            </h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {courses.map((course) => (
-                <div
-                  key={course.id}
-                  className="bg-gradient-to-r from-indigo-100 to-purple-200 p-4 rounded-lg shadow-md hover:scale-105 transition-all duration-300"
-                >
-                  {" "}
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    {course.title}
-                  </h2>
-                  <p className="text-sm text-gray-600">
-                    Instructor: {course.instructor}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Enrolled: {course.enrolledDate}
-                  </p>
-                  <p className="text-sm text-gray-600">Price: {course.price}</p>
-                  <button className="mt-3 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition">
-                    Go to Course
-                  </button>
-                </div>
-              ))}
+            <img
+              src={course.thumbnail}
+              alt={course.title}
+              className="w-full  object-cover"
+              style={{ maxHeight: "180px" }}
+            />
+            <div className="p-4 space-y-2">
+              <h2 className="text-xl font-semibold">{course.title}</h2>
+              <p className="text-gray-600 text-sm">{course.description}</p>
+              <p className="text-sm text-gray-500">
+                <strong>Instructor:</strong> {course.instructor}
+              </p>
+              <p className="text-sm text-gray-500">
+                <strong>Category:</strong> {course.category}
+              </p>
+              <p className="text-sm text-gray-700">
+                <strong>Rating:</strong> ⭐ {course.rating}
+              </p>
+              <div className="flex items-center justify-between pt-2">
+                <span className="text-lg font-bold text-green-600">
+                  ${course.price}
+                </span>
+                <button className="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700 transition">
+                  Add to Cart
+                </button>
+              </div>
             </div>
-          </motion.div>
-        </main>
+          </div>
+        ))}
       </div>
     </div>
   );
