@@ -32,9 +32,15 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Export multer configuration
 export const upload = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 100 * 1024 * 1024 }, // Limit: 100 MB
+  storage: multer.memoryStorage(), // ✅ Needed for buffer
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+  fileFilter: (req, file, cb) => {
+    const allowed = [".jpeg", ".jpg", ".png", ".pdf", ".mp4", ".mov", ".avi", ".webm"];
+    const ext = path.extname(file.originalname).toLowerCase();
+    allowed.includes(ext)
+      ? cb(null, true)
+      : cb(new Error(`File type ${ext} not allowed`));
+  },
+
 });

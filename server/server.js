@@ -43,7 +43,6 @@ app.use("/api",getMeRouter)
 app.use("/api/course",courseRoute);
 
 
-app.use("/api",getMeRouter)
 
 
 const PORT = process.env.PORT || 8000;

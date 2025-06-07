@@ -3,6 +3,7 @@ import cloudinary from "../utils/cloudinary.js";
 export const uploadAvatar = async (req, res, next) => {
   try {
     const avatar  = req.file;
+
     if (!avatar) {
       return res.status(400).json({
         success: false,
@@ -16,7 +17,7 @@ export const uploadAvatar = async (req, res, next) => {
     const result = await cloudinary.uploader.upload(base64, {
       folder: "avatars",
     });
-
+  
     req.avatar = result;
     next();
   } catch (error) {

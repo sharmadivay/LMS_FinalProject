@@ -172,8 +172,8 @@ export const getOneUserController = async (req, res) => {
 // update user
 export const updateUserController = async (req, res) => {
   try {
-    const { name, password } = req.body;
-    const { id } = req.params;
+    const { name, phone , country } = req.body;
+    const { id } = req.user;
 
     // check user
     const checkUser = await User.findById(id);
@@ -185,20 +185,17 @@ export const updateUserController = async (req, res) => {
       });
     }
 
-    let hashedPassword = "";
-
-    if (password) {
-      hashedPassword = await hashPassword(password);
-    }
+  
 
     // get updated values
     checkUser.name = name || checkUser.name;
-    checkUser.password = hashedPassword || checkUser.password;
+    checkUser.phone = phone || checkUser.phone;
+    checkUser.country = country || checkUser.country
 
     await checkUser.save();
 
     res.status(200).json({
-      success: false,
+      success: true,
       message: "User Updated Successfully",
     });
   } catch (error) {
@@ -214,8 +211,8 @@ export const updateUserController = async (req, res) => {
 export const avatarController = async (req, res) => {
   try {
     const { url } = req.avatar;
-
-    const { id } = req.params;
+    console.log(req.user)
+    const { id } = req.user;
 
     const checkUser = await User.findById(id).select(`-password`);
 
@@ -233,7 +230,6 @@ export const avatarController = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Avatar Added Successfully",
-      checkUser,
     });
   } catch (error) {
     console.log("Avatar Error", error.message || error);

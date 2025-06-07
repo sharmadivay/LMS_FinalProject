@@ -5,7 +5,7 @@ const teacherUrl = "http://localhost:8082/api/teacher";
 
 export const registerTeacher = async (data) => {
   try {
-    console.log(data)
+
     const { name, email, password } = data;
     const res = await axios.post(
       `${teacherUrl}/register-teacher`,
