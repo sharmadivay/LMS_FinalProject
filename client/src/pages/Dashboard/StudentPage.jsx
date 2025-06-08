@@ -30,7 +30,7 @@ const StudentPage = () => {
     { label: "Home", icon: <FiHome size={20} /> , route : "/student" },
     { label: "My Learning", icon: <FiBookOpen size={20}  /> , route: "/student/courses"},
     { label: "All Courses", icon: <FiPlayCircle size={20} />  , route: "/student/allcourses"},
-    { label: "Cart", icon: <FiShoppingCart size={20} />  , route: "/student/profile"},
+    { label: "Cart", icon: <FiShoppingCart size={20} />  , route: "/student/cart"},
      { label: "Settings", icon: <FiSettings size={20} />  , route: "/student/profile"},
      
      

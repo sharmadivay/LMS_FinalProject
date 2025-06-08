@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getMe } from "../../hooks/getMe";
 import { avatar , updateUser } from "../../hooks/users";
 import { FiEdit2 } from "react-icons/fi";
+import { ChangePasswordModal } from "../../components/Student/ChangePasswordModal";
 
 import toast from "react-hot-toast";
 
@@ -11,10 +12,10 @@ const StudentProfile = () => {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [country,setCountry] = useState('')
   const [image,setImage] = useState('')
+  const [isPasswordChange,setIsPasswordChange] = useState(false)
 
   const [isUpdate, setIsUpdate] = useState(false)
   
@@ -74,9 +75,12 @@ const StudentProfile = () => {
     
   }
 
-  useEffect(() => {
-   
+  const handleChangePassword = async (e) =>{
+    e.preventDefault()
+     setIsPasswordChange(true)
+  }
 
+  useEffect(() => {
     fetchUser();
   }, []);
 
@@ -91,7 +95,7 @@ const StudentProfile = () => {
           <div className="flex items-center space-x-4 relative">
             <div className="relative group">
               <img
-                src={image}
+                src={image || "https://res.cloudinary.com/duecnsulw/image/upload/v1748502713/wa8tmkxplsd0kgzw478b.avif"}
                 alt="avatar"
                 className="h-24 w-24 rounded-full object-cover border border-gray-300"
               />
@@ -116,7 +120,7 @@ const StudentProfile = () => {
                   const file = e.target.files[0];
                   if (file) {
                     setIsUploading(true)
-                    handleImage(file) // ✅ Call API function to upload
+                    handleImage(file) 
                   }
                 }}
               />
@@ -138,7 +142,7 @@ const StudentProfile = () => {
                 </label>
                 <input
                   type="text"
-                  value={name}
+                  value={name || "User"}
                   disabled={!isUpdate}
                   onChange={(e)=>setName(e.target.value)}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
@@ -148,7 +152,7 @@ const StudentProfile = () => {
                 <label className="block text-sm font-medium mb-1">Email</label>
                 <input
                   type="email"
-                  value={email}
+                  value={email || "example@gmail.com"}
                    disabled = {true}
                    onChange={(e)=>setEmail(e.target.value)}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
@@ -160,7 +164,7 @@ const StudentProfile = () => {
                 </label>
                 <input
                   type="text"
-                  value={phone}
+                  value={phone || "1234567890"}
                   disabled={!isUpdate}
                   onChange={(e)=>setPhone(e.target.value)}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
@@ -172,7 +176,7 @@ const StudentProfile = () => {
                 </label>
                 <input
                   type="text"
-                  value={country}
+                  value={country || "India"}
                   disabled={!isUpdate}
                   onChange={(e)=>setCountry(e.target.value)}
                   className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100"
@@ -182,10 +186,13 @@ const StudentProfile = () => {
                 <button className="px-6 py-2 mt-2 bg-blue-100 text-black font-semibold rounded-lg hover:bg-blue-200 transition-all" onClick={handleUpdate}>
                  {isUpdate ? "Save Changes" : "Update Profile"} 
                 </button>
-                <button className="px-6 py-2 mt-2 bg-blue-100 text-black font-semibold rounded-lg hover:bg-blue-200 transition-all">
+                <button className="px-6 py-2 mt-2 bg-blue-100 text-black font-semibold rounded-lg hover:bg-blue-200 transition-all" onClick={handleChangePassword}>
                   Change Password
                 </button>
               </div>
+              { isPasswordChange &&
+                <ChangePasswordModal onClose={() => setIsPasswordChange(false)}/>
+              }
             </div>
           </div>
         </div>
