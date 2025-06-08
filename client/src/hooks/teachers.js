@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 
 const teacherUrl = "http://localhost:8082/api/teacher";
 
+
+
 export const registerTeacher = async (data) => {
   try {
 
@@ -41,3 +43,5 @@ export const loginTeacher = async (data) =>{
     toast.error(`${error}`)
   }
 }
+
+
