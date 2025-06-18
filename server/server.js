@@ -37,12 +37,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/user",userRoute);
 app.use("/api/teacher",teacherRoute);
 app.use("/api/course",courseRoute);
-
 app.use("/api",getMeRouter)
-
-app.use("/api/course",courseRoute);
-
-
 
 
 const PORT = process.env.PORT || 8000;

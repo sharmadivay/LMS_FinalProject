@@ -16,6 +16,7 @@ import StudentHome from "./pages/Sutdents/StudentHome.jsx";
 import TeacherProfile from "./pages/Teacher/TeacherProfile.jsx";
 import Cart from "./pages/Sutdents/Cart.jsx";
 import TeacherPage from "./pages/Dashboard/TeacherPage.jsx";
+import AllCourses from "./pages/Teacher/UploadCourse.jsx";
 
 function App() {
   return (
@@ -40,12 +41,12 @@ function App() {
           <Route path="cart" element={<Cart/>}/>
           </Route>
           
-
+           {/* Teacher  */}
           <Route path="/teacher" element={<TeacherPage/>}>
-           <Route index element={<StudentHome />} />
+          <Route index element={<StudentHome />} />
           <Route path="profile" element={<TeacherProfile/>}/>
           <Route path="allcourses" element={<AllCoursess/>}/>
-          <Route path="mycourses" element={<AllCoursess/>}/>
+          <Route path="mycourses" element={<AllCourses/>}/>
           <Route path="courses" element={<StudentCouse/>}/>
           <Route path="cart" element={<Cart/>}/>
             <Route/>
