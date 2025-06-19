@@ -18,7 +18,13 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+  phone:{
+    true: String
+  },
+  country: {
+     type: String,
+     default: "India"
+  },
     avatar: {
       type: String,
       default: "",

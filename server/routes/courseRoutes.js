@@ -13,7 +13,7 @@ import { protect } from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 // GET all available courses (public)
-router.get("/", getAllCourses);
+router.get("/all", getAllCourses);
 
 // POST a new course (protected, teachers only, upload thumbnail & attachments)
 router.post(

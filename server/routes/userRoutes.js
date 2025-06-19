@@ -2,6 +2,7 @@ import express from "express"
 import {upload }from "../utils/multer.js"
 import {uploadAvatar} from "../middlewares/avatar.js"
 import { addEnrollement, avatarController, getAllUsersControllers, getOneUserController, loginUserController, registerUserController, updateUserController } from "../controllers/userController.js";
+import { protectedRoute } from "../middlewares/projectedRoute.js";
 
 const router = express.Router();
 
@@ -18,10 +19,10 @@ router.get("/get-users",getAllUsersControllers);
 router.get("/one-user/:id",getOneUserController);
 
 // update user
-router.put("/update-user/:id",updateUserController);
+router.put("/update-user",protectedRoute,updateUserController);
 
 // add/update avatar
-router.put("/update-avatar/:id",upload.single(`avatar`),uploadAvatar,avatarController);
+router.put("/update-avatar",upload.single(`avatar`),uploadAvatar,protectedRoute,avatarController);
 
 // add enrollement 
 router.post("/enroll-course",addEnrollement);

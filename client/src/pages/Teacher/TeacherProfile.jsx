@@ -8,7 +8,7 @@ import { ChangePasswordModal } from "../../components/Student/ChangePasswordModa
 import toast from "react-hot-toast";
 
 
-const StudentProfile = () => {
+const TeacherProfile = () => {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -201,4 +201,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default TeacherProfile;

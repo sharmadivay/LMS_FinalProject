@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import TeacherDashboard from "./Teacherdashboard";
 import TeacherNavbar from "../../components/Teachers/TeacherNavbar";
 
 const AllCourses = () => {

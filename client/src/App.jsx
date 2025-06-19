@@ -3,17 +3,22 @@ import {Toaster} from "react-hot-toast"
 import Login from "./pages/Auth/Login.jsx"
 import LandingPage from "./pages/Auth/LandingPage.jsx";
 import Register from "./pages/Auth/Register.jsx";
-
-
 import Home from "./pages/Dashboard/Home.jsx";
-import StudentMainCard from "./pages/Sutdents/StudentMainCard.jsx";
-import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
 import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
+
+// student imports 
+import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
 import StudentPage from "./pages/Dashboard/StudentPage.jsx";
 import StudentProfile from "./pages/Sutdents/StudentProfile.jsx";
 import StudentHome from "./pages/Sutdents/StudentHome.jsx";
-// import TeacherMessages from "./pages/Teacher/Teachermessage.jsx";
-// import TeacherWelcome from "./pages/Teacher/Teacherhome.jsx";
+
+
+// teacher imports 
+import TeacherProfile from "./pages/Teacher/TeacherProfile.jsx";
+import Cart from "./pages/Sutdents/Cart.jsx";
+import TeacherPage from "./pages/Dashboard/TeacherPage.jsx";
+
+
 function App() {
   return (
     <>
@@ -34,9 +39,19 @@ function App() {
           <Route path="profile" element={<StudentProfile/>}/>
           <Route path="allcourses" element={<AllCoursess/>}/>
           <Route path="courses" element={<StudentCouse/>}/>
-
+          <Route path="cart" element={<Cart/>}/>
           </Route>
           
+           {/* Teacher  */}
+          <Route path="/teacher" element={<TeacherPage/>}>
+          <Route index element={<StudentHome />} />
+          <Route path="profile" element={<TeacherProfile/>}/>
+          <Route path="allcourses" element={<AllCoursess/>}/>
+          <Route path="mycourses" element={<AllCourses/>}/>
+          <Route path="courses" element={<StudentCouse/>}/>
+          <Route path="cart" element={<Cart/>}/>
+            <Route/>
+          </Route>
 
 
         

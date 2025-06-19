@@ -100,7 +100,7 @@ const Login = () => {
 
           {/* password  */}
           <div className="flex flex-col">
-                      <label htmlFor="password">Confirm Password</label>
+                      <label htmlFor="password">Password</label>
                       <div className="flex items-center  border rounded-xl bg-[#FAFCFE]">
                         < FiLock  size={20} className="ml-2" />
           

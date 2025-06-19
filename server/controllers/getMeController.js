@@ -1,9 +1,8 @@
 import {User} from "../models/userModel.js"
-import {Teacher} from "../models/teacherSchema.js"
 export const getMeController = async (req,res) => {
     try {
         const user = req.user
-        const role = User.findById(user.id) ? "student" : "teacher" ;
+        const role = await   User.findById(user.id) ? "student" : "teacher" ;
         res.json({
             success: true,
             message: "User Found",

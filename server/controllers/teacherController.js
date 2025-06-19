@@ -5,7 +5,7 @@ import {generateToken} from "../utils/genrateToken.js";
 // register controller
 export const registerTeacherController = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password , phone} = req.body;
 
     // validation
     if ((!name || !email || !password)) {
@@ -48,6 +48,7 @@ export const registerTeacherController = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      phone
     });
 
     if (!user) {
@@ -197,7 +198,7 @@ export const getOneTeacherController = async (req, res) => {
 // update user
 export const updateTeacherController = async (req, res) => {
   try {
-    const { name, password } = req.body;
+    const { name, password , phone , country } = req.body;
     const { id } = req.params;
 
     // check user
@@ -219,6 +220,8 @@ export const updateTeacherController = async (req, res) => {
     // get updated values
     checkUser.name = name || checkUser.name;
     checkUser.password = hashedPassword || checkUser.password;
+    checkUser.phone = phone || checkUser.phone,
+    checkUser.country = country || checkUser.country
 
     await checkUser.save();
 

@@ -1,8 +1,31 @@
-import {  Link} from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { Link} from "react-router-dom";
+import { getMe } from "../../hooks/getMe";
 const StudentHome = () => {
+   const [name, setName] = useState("")
+
+  const fetchUser = async () => {
+      try {
+        const res = await getMe();
+        if (res.success) {
+          setName(res.user.name)
+        } else {
+          toast.error(res.message);
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+        navigate("/");
+      }
+    };
+
+     useEffect(() => {
+        fetchUser();
+      }, []);
+    
   return (
-    <div className="bg-[#F9FAFB] min-h-screen p-6">
+    <div className="bg-[#F9FAFB] min-h-screen  p-p t-0 ">
+      <h3 className="text-4xl font-bold mb-8">Welcome back, {name}</h3>
       {/* Hero Section */}
       <div className="bg-[#f0e6de] rounded-2xl p-10 flex flex-col justify-center relative overflow-hidden">
         <img
