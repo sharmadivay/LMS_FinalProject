@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { uploadCourse, fetchCourses } from '../../hooks/uploadCourse';
+import { uploadCourse, fetchCourses } from '../../hooks/course';
 import EditCourseModal from './EditCourseModal';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

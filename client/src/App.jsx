@@ -17,7 +17,7 @@ import StudentHome from "./pages/Sutdents/StudentHome.jsx";
 import TeacherProfile from "./pages/Teacher/TeacherProfile.jsx";
 import Cart from "./pages/Sutdents/Cart.jsx";
 import TeacherPage from "./pages/Dashboard/TeacherPage.jsx";
-
+import UploadCourse from "./pages/Teacher/UploadCourse.jsx";
 
 function App() {
   return (
