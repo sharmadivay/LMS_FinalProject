@@ -12,11 +12,12 @@ import StudentPage from "./pages/Dashboard/StudentPage.jsx";
 import StudentProfile from "./pages/Sutdents/StudentProfile.jsx";
 import StudentHome from "./pages/Sutdents/StudentHome.jsx";
 
+
 // teacher imports 
 import TeacherProfile from "./pages/Teacher/TeacherProfile.jsx";
 import Cart from "./pages/Sutdents/Cart.jsx";
 import TeacherPage from "./pages/Dashboard/TeacherPage.jsx";
-import AllCourses from "./pages/Teacher/UploadCourse.jsx";
+
 
 function App() {
   return (

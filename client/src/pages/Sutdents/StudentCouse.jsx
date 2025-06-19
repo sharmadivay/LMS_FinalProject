@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
+//import { Search } from "lucide-react";
 
 const MyCourses = () => {
   const [searchQuery, setSearchQuery] = useState("");
