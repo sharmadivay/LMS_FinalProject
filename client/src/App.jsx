@@ -4,7 +4,7 @@ import Login from "./pages/Auth/Login.jsx"
 import LandingPage from "./pages/Auth/LandingPage.jsx";
 import Register from "./pages/Auth/Register.jsx";
 import Home from "./pages/Dashboard/Home.jsx";
-import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
+// import AllCoursess from "./pages/Sutdents/AvaiableCourseforstudents.jsx";
 
 // student imports 
 import StudentCouse from "./pages/Sutdents/StudentCouse.jsx";
@@ -37,7 +37,7 @@ function App() {
          <Route path="/student" element={<StudentPage/>}>
           <Route index element={<StudentHome />} />
           <Route path="profile" element={<StudentProfile/>}/>
-          <Route path="allcourses" element={<AllCoursess/>}/>
+          {/* <Route path="allcourses" element={<AllCoursess/>}/> */}
           <Route path="courses" element={<StudentCouse/>}/>
           <Route path="cart" element={<Cart/>}/>
           </Route>
@@ -46,8 +46,8 @@ function App() {
           <Route path="/teacher" element={<TeacherPage/>}>
           <Route index element={<StudentHome />} />
           <Route path="profile" element={<TeacherProfile/>}/>
-          <Route path="allcourses" element={<AllCoursess/>}/>
-          <Route path="mycourses" element={<AllCourses/>}/>
+          {/* <Route path="allcourses" element={<AllCoursess/>}/> */}
+          {/* <Route path="mycourses" element={<AllCourses/>}/> */}
           <Route path="courses" element={<StudentCouse/>}/>
           <Route path="cart" element={<Cart/>}/>
             <Route/>
