@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { updateCourse, deleteCourse } from '../hooks/useCourses';
+import { updateCourse, deleteCourse } from '../../hooks/useCourse.js';
 /*import { motion } from 'framer-motion';*/
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 
 const EditCourseModal = ({ isOpen, course, onClose, onUpdate }) => {

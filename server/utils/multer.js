@@ -44,3 +44,9 @@ export const upload = multer({
   },
 
 });
+
+export const courseUpload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
+  fileFilter,
+});

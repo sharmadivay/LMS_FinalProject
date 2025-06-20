@@ -7,7 +7,7 @@ import {
   deleteCourse,
   rateCourse,
 } from "../controllers/courseController.js";
-import { upload } from "../utils/multer.js";
+import { courseUpload } from "../utils/multer.js";
 import { protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get("/all", getAllCourses);
 router.post(
   "/",
   protect,
-  upload.fields([
+  courseUpload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "attachments", maxCount: 10 },
   ]),
