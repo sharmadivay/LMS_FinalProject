@@ -6,11 +6,15 @@ axios.defaults.withCredentials = true;
 const API_BASE_URL = 'http://localhost:8082/api/course'; 
 
 export const uploadCourse = async (formData) => {
-  const res = await axios.post(`${API_BASE_URL}/createCourse`, formData, {
+  const res = await axios.post(`${API_BASE_URL}/createCourse`, formData,{
+    withCredentials: true
+  }, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      
     },
   });
+
   return res.data;
 };
 

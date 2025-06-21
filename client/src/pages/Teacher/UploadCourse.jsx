@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Plus, Search, X, ImagePlus, FilePlus, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import EditCourseModal from "../../components/teachers/EditCourseModal.jsx";
-import { uploadCourse, fetchCourses } from "../../hooks/useCourse.js";
+import { uploadCourse as uploadCourseApi, fetchCourses } from "../../hooks/useCourse.js";
 
 const categories = [
   "Web Development",
@@ -61,7 +61,7 @@ const categories = [
     attachments.forEach((file) => formData.append("attachments", file));
 
     try {
-      await uploadCourse(formData);
+      await uploadCourseApi(formData);
       toast.success("Course created successfully");
       resetForm();
       setIsFormOpen(false);
@@ -159,6 +159,7 @@ const categories = [
       {/* Course Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => (
+          
           <div
             key={course._id}
             className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-200 flex flex-col"

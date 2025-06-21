@@ -46,7 +46,13 @@ export const upload = multer({
 });
 
 export const courseUpload = multer({
-  storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
-  fileFilter,
+  storage: multer.memoryStorage(),          // buffer in RAM
+  limits: { fileSize: 100 * 1024 * 1024 },  // 100 MB
+  fileFilter: (req, file, cb) => {
+    const allowed = [".jpeg", ".jpg", ".png", ".pdf", ".mp4", ".mov", ".avi", ".webm"];
+    const ext = path.extname(file.originalname).toLowerCase();
+    allowed.includes(ext)
+      ? cb(null, true)
+      : cb(new Error(`File type ${ext} not allowed`));
+  },
 });

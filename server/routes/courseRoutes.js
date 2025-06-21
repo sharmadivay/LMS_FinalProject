@@ -9,6 +9,7 @@ import {
 } from "../controllers/courseController.js";
 import { courseUpload } from "../utils/multer.js";
 import { protect } from "../middlewares/authMiddleware.js";
+import { protectedRoute } from "../middlewares/projectedRoute.js";
 
 const router = express.Router();
 
@@ -17,8 +18,8 @@ router.get("/all", getAllCourses);
 
 // POST a new course (protected, teachers only, upload thumbnail & attachments)
 router.post(
-  "/",
-  protect,
+  "/createCourse",
+  protectedRoute,
   courseUpload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "attachments", maxCount: 10 },

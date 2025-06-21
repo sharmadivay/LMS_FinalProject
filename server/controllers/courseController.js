@@ -1,7 +1,14 @@
 import {Course}  from "../models/course.js";
 import { User } from "../models/userModel.js";  
 import { Teacher } from "../models/teacherSchema.js";
-import { protect } from "../middlewares/authMiddleware.js";
+import DataUriParser from "datauri/parser.js";      // converts buffer→data‑URL
+import cloudinary from "../utils/cloudinary.js";
+import path from "path";
+
+const parser = new DataUriParser();
+
+const bufferToDataURI = (file) =>
+  parser.format(path.extname(file.originalname).toString(), file.buffer).content;
 
 // CREATE COURSE (Teacher only)
 export const createCourse = async (req, res) => {
@@ -9,30 +16,48 @@ export const createCourse = async (req, res) => {
     const { title, description, category, price } = req.body;
     const instructorId = req.user._id;
 
-    const thumbnail = req.files["thumbnail"] ? req.files["thumbnail"][0].path : "";
-    const attachments = req.files["attachments"]
-      ? req.files["attachments"].map((file) => file.path)
-      : [];
+    /* ---------- 1. UPLOAD THUMBNAIL ---------- */
+    let thumbnailUrl = "";
+    if (req.files?.thumbnail?.length) {
+      const file = req.files.thumbnail[0];
+      const uploadRes = await cloudinary.uploader.upload(bufferToDataURI(file), {
+        folder: "courses/thumbnails",
+        resource_type: "image",
+      });
+      thumbnailUrl = uploadRes.secure_url;
+    }
 
-    const course = new Course({
+    /* ---------- 2. UPLOAD ATTACHMENTS ---------- */
+    let attachmentUrls = [];
+    if (req.files?.attachments?.length) {
+      const uploads = req.files.attachments.map((file) =>
+        cloudinary.uploader.upload(bufferToDataURI(file), {
+          folder: "courses/attachments",
+          resource_type: file.mimetype.startsWith("video") ? "video" : "auto",
+        })
+      );
+      const results = await Promise.all(uploads);
+      attachmentUrls = results.map((r) => r.secure_url);
+    }
+
+    /* ---------- 3. SAVE COURSE ---------- */
+    const course = await Course.create({
       title,
       description,
       category,
       price,
       instructor: instructorId,
-      thumbnail,
-      attachments,
+      thumbnail: thumbnailUrl,
+      attachments: attachmentUrls,
     });
 
-    await course.save();
-
-    // Link course to teacher
     await Teacher.findByIdAndUpdate(instructorId, {
       $push: { courseCreated: course._id },
     });
 
     res.status(201).json({ message: "Course created successfully", course });
   } catch (error) {
+    console.error("Create course error:", error);
     res.status(500).json({ message: "Error creating course", error: error.message });
   }
 };
