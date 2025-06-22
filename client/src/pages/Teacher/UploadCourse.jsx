@@ -2,7 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import { Plus, Search, X, ImagePlus, FilePlus, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import EditCourseModal from "../../components/teachers/EditCourseModal.jsx";
-import { uploadCourse as uploadCourseApi, fetchCourses } from "../../hooks/useCourse.js";
+import {
+  uploadCourse as uploadCourseApi,
+  fetchCourses,
+} from "../../hooks/useCourse.js";
 
 const categories = [
   "Web Development",
@@ -13,10 +16,11 @@ const categories = [
   "Marketing",
 ];
 
- const UploadCourse = () => {
+const UploadCourse = () => {
   // ─── Data ────────────────────────────────────────────────────────────────
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // modal state
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -52,6 +56,7 @@ const categories = [
   // ─── Handlers ────────────────────────────────────────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -68,6 +73,8 @@ const categories = [
       loadCourses();
     } catch {
       toast.error("Failed to upload course");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -159,7 +166,6 @@ const categories = [
       {/* Course Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCourses.map((course) => (
-          
           <div
             key={course._id}
             className="bg-white shadow-md rounded-2xl overflow-hidden border border-gray-200 flex flex-col"
@@ -228,7 +234,11 @@ const categories = [
 
             <h2 className="mb-6 text-xl font-bold">Upload Course</h2>
 
-            <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-6">
+            <form
+              onSubmit={handleSubmit}
+              encType="multipart/form-data"
+              className="space-y-6"
+            >
               {/* Title */}
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Title</label>
@@ -295,16 +305,25 @@ const categories = [
               <div className="flex flex-col gap-1">
                 <label className="font-medium">Thumbnail</label>
                 {!thumbnailPreview ? (
-                  <label
-                    className="flex h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-4 hover:border-blue-500"
-                  >
+                  <label className="flex h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-300 p-4 hover:border-blue-500">
                     <ImagePlus className="h-8 w-8 text-gray-400" />
-                    <span className="text-sm text-gray-500">Click to upload a cover image</span>
-                    <input type="file" accept="image/*" onChange={handleThumbnailChange} className="hidden" />
+                    <span className="text-sm text-gray-500">
+                      Click to upload a cover image
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleThumbnailChange}
+                      className="hidden"
+                    />
                   </label>
                 ) : (
                   <div className="relative w-full max-h-52 overflow-hidden rounded-lg">
-                    <img src={thumbnailPreview} alt="Thumbnail preview" className="h-full w-full object-cover" />
+                    <img
+                      src={thumbnailPreview}
+                      alt="Thumbnail preview"
+                      className="h-full w-full object-cover"
+                    />
                     <button
                       type="button"
                       className="absolute right-2 top-2 rounded-full bg-white/80 p-1 text-red-500 backdrop-blur hover:bg-white"
@@ -321,7 +340,9 @@ const categories = [
                 <label className="font-medium">Attachments</label>
                 <div
                   className={`flex flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-6 text-center transition-colors ${
-                    dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-blue-500"
+                    dragActive
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-blue-500"
                   }`}
                   onDragOver={handleDrag}
                   onDragLeave={handleDrag}
@@ -330,9 +351,17 @@ const categories = [
                 >
                   <FilePlus className="h-8 w-8 text-gray-400" />
                   <p className="text-sm text-gray-500">
-                    {dragActive ? "Drop files here…" : "Click or drag files to attach"}
+                    {dragActive
+                      ? "Drop files here…"
+                      : "Click or drag files to attach"}
                   </p>
-                  <input ref={attachInputRef} type="file" multiple onChange={handleAttachmentsChange} className="hidden" />
+                  <input
+                    ref={attachInputRef}
+                    type="file"
+                    multiple
+                    onChange={handleAttachmentsChange}
+                    className="hidden"
+                  />
                 </div>
 
                 {attachments.length > 0 && (
@@ -370,9 +399,14 @@ const categories = [
                 </button>
                 <button
                   type="submit"
-                  className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className={`rounded-lg px-5 py-2 font-medium text-white ${
+                    isSubmitting
+                      ? "bg-blue-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  }`}
                 >
-                  Submit
+                  {isSubmitting ? "Uploading..." : "Submit"}
                 </button>
               </div>
             </form>
@@ -394,6 +428,6 @@ const categories = [
       )}
     </div>
   );
-}
+};
 
-export default UploadCourse
+export default UploadCourse;

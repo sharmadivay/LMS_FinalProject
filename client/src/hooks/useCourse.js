@@ -26,11 +26,11 @@ export const fetchCourses = async () => {
 
 // ✅ Update an existing course
 export const updateCourse = async (id, updatedData) => {
-  const res = await axios.put(`${API_BASE_URL}/courses/${id}`, updatedData);
+  const res = await axios.put(`${API_BASE_URL}/update/${id}`, updatedData);
   return res.data;
 };
 
 export const deleteCourse = async (id) => {
-  const res = await axios.delete(`${API_BASE_URL}/courses/${id}`);
+  const res = await axios.delete(`${API_BASE_URL}/delete/${id}`);
   return res.data;
 };

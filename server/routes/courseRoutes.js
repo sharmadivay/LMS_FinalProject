@@ -6,6 +6,7 @@ import {
   cancelEnrollment,
   deleteCourse,
   rateCourse,
+  updateCourse
 } from "../controllers/courseController.js";
 import { courseUpload } from "../utils/multer.js";
 import { protect } from "../middlewares/authMiddleware.js";
@@ -37,6 +38,8 @@ router.post("/cancel/:id", protect, cancelEnrollment);
 router.post("/rate/:id", protect, rateCourse);
 
 // Delete a course (teacher only)
-router.delete("/:id", protect, deleteCourse);
+router.delete("/delete/:id", deleteCourse);
+
+router.put("/update/:id",updateCourse)
 
 export default router;
