@@ -58,7 +58,7 @@ const TeacherPage = () => {
         {/* Profile Section */}
         <NavLink to="/student" className="flex items-center space-x-3 mb-10 cursor-pointer" >
           <img
-            src={teacher.avatar}
+            src={teacher.avatar || "https://res.cloudinary.com/duecnsulw/image/upload/v1748502713/wa8tmkxplsd0kgzw478b.avif"}
             alt="avatar"
             className="h-12 w-12 rounded-full object-cover"
           />

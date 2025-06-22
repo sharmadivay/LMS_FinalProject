@@ -1,7 +1,15 @@
-import {Course}  from "../models/course.js";
-import { User } from "../models/userModel.js";  
+import { Course } from "../models/course.js";
+import { User } from "../models/userModel.js";
 import { Teacher } from "../models/teacherSchema.js";
-import { protect } from "../middlewares/authMiddleware.js";
+import DataUriParser from "datauri/parser.js"; // converts buffer→data‑URL
+import cloudinary from "../utils/cloudinary.js";
+import path from "path";
+
+const parser = new DataUriParser();
+
+const bufferToDataURI = (file) =>
+  parser.format(path.extname(file.originalname).toString(), file.buffer)
+    .content;
 
 // CREATE COURSE (Teacher only)
 export const createCourse = async (req, res) => {
@@ -9,31 +17,54 @@ export const createCourse = async (req, res) => {
     const { title, description, category, price } = req.body;
     const instructorId = req.user._id;
 
-    const thumbnail = req.files["thumbnail"] ? req.files["thumbnail"][0].path : "";
-    const attachments = req.files["attachments"]
-      ? req.files["attachments"].map((file) => file.path)
-      : [];
+    /* ---------- 1. UPLOAD THUMBNAIL ---------- */
+    let thumbnailUrl = "";
+    if (req.files?.thumbnail?.length) {
+      const file = req.files.thumbnail[0];
+      const uploadRes = await cloudinary.uploader.upload(
+        bufferToDataURI(file),
+        {
+          folder: "courses/thumbnails",
+          resource_type: "image",
+        }
+      );
+      thumbnailUrl = uploadRes.secure_url;
+    }
 
-    const course = new Course({
+    /* ---------- 2. UPLOAD ATTACHMENTS ---------- */
+    let attachmentUrls = [];
+    if (req.files?.attachments?.length) {
+      const uploads = req.files.attachments.map((file) =>
+        cloudinary.uploader.upload(bufferToDataURI(file), {
+          folder: "courses/attachments",
+          resource_type: file.mimetype.startsWith("video") ? "video" : "auto",
+        })
+      );
+      const results = await Promise.all(uploads);
+      attachmentUrls = results.map((r) => r.secure_url);
+    }
+
+    /* ---------- 3. SAVE COURSE ---------- */
+    const course = await Course.create({
       title,
       description,
       category,
       price,
       instructor: instructorId,
-      thumbnail,
-      attachments,
+      thumbnail: thumbnailUrl,
+      attachments: attachmentUrls,
     });
 
-    await course.save();
-
-    // Link course to teacher
     await Teacher.findByIdAndUpdate(instructorId, {
       $push: { courseCreated: course._id },
     });
 
     res.status(201).json({ message: "Course created successfully", course });
   } catch (error) {
-    res.status(500).json({ message: "Error creating course", error: error.message });
+    console.error("Create course error:", error);
+    res
+      .status(500)
+      .json({ message: "Error creating course", error: error.message });
   }
 };
 
@@ -45,7 +76,9 @@ export const getAllCourses = async (req, res) => {
       .populate("enrolledStudents", "name email");
     res.status(200).json({ courses });
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch courses", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch courses", error: error.message });
   }
 };
 
@@ -71,7 +104,9 @@ export const enrollCourse = async (req, res) => {
 
     res.status(200).json({ message: "Enrolled successfully", course });
   } catch (error) {
-    res.status(500).json({ message: "Error enrolling in course", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error enrolling in course", error: error.message });
   }
 };
 
@@ -91,7 +126,9 @@ export const cancelEnrollment = async (req, res) => {
 
     res.status(200).json({ message: "Enrollment cancelled successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error cancelling enrollment", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error cancelling enrollment", error: error.message });
   }
 };
 
@@ -120,39 +157,100 @@ export const rateCourse = async (req, res) => {
     await course.save();
     res.status(200).json({ message: "Course rated successfully", course });
   } catch (error) {
-    res.status(500).json({ message: "Error rating course", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error rating course", error: error.message });
   }
 };
 
 // DELETE COURSE (Teacher only)
 export const deleteCourse = async (req, res) => {
   try {
-    const courseId = req.params.id;
-    const userId = req.user._id;
+    const {id} = req.params;
 
-    const course = await Course.findById(courseId);
-    if (!course) return res.status(404).json({ message: "Course not found" });
-
-    // Only teacher can delete their course
-    if (course.instructor.toString() !== userId.toString()) {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
+    const course = await Course.findById(id);
+   
+    if (!course) return res.status(404).json({success: false, message: "Course not found" });
 
     // Delete files
-    if (course.thumbnail) fs.unlinkSync(course.thumbnail);
-    if (course.attachments && course.attachments.length > 0) {
-      course.attachments.forEach((file) => fs.existsSync(file) && fs.unlinkSync(file));
-    }
+    // if (course.thumbnail) fs.unlinkSync(course.thumbnail);
+    // if (course.attachments && course.attachments.length > 0) {
+    //   course.attachments.forEach(
+    //     (file) => fs.existsSync(file) && fs.unlinkSync(file)
+    //   );
+    // }
 
-    await Course.findByIdAndDelete(courseId);
-    await Teacher.findByIdAndUpdate(userId, {
-      $pull: { courseCreated: courseId },
+    await Course.findByIdAndDelete(id);
+    await Teacher.findByIdAndUpdate(id, {
+      $pull: { courseCreated: id },
     });
 
-    res.status(200).json({ message: "Course deleted successfully" });
+    res.status(200).json({success: true , message: "Course deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error deleting course", error: error.message });
-  }
+    res
+      .status(500)
+      .json({ message: "Error deleting course", success: false});
+  }
 };
 
+// Update course (Teacher only)
+export const updateCourse = async (req, res) => {
+  try {
+    const { title, description, category, price } = req.body;
+    const {id} = req.params;
+    /* ---------- 1. UPLOAD THUMBNAIL ---------- */
+    // let thumbnailUrl = "";
+    // if (req.files?.thumbnail?.length) {
+    //   const file = req.files.thumbnail[0];
+    //   const uploadRes = await cloudinary.uploader.upload(
+    //     bufferToDataURI(file),
+    //     {
+    //       folder: "courses/thumbnails",
+    //       resource_type: "image",
+    //     }
+    //   );
+    //   thumbnailUrl = uploadRes.secure_url;
+    // }
 
+    /* ---------- 2. UPLOAD ATTACHMENTS ---------- */
+    // let attachmentUrls = [];
+    // if (req.files?.attachments?.length) {
+    //   const uploads = req.files.attachments.map((file) =>
+    //     cloudinary.uploader.upload(bufferToDataURI(file), {
+    //       folder: "courses/attachments",
+    //       resource_type: file.mimetype.startsWith("video") ? "video" : "auto",
+    //     })
+    //   );
+    //   const results = await Promise.all(uploads);
+    //   attachmentUrls = results.map((r) => r.secure_url);
+    // }
+
+    /* ---------- 3. SAVE COURSE ---------- */
+    const existingCourse = await Course.findById(id);
+
+    if (!existingCourse) {
+      return res.json({
+        success: false,
+        message: "No Course Found",
+      });
+    }
+
+    const checkTitle = title || existingCourse.title;
+    const checkDescription = description || existingCourse.description;
+    const checkCategory = category || existingCourse.category;
+    const checkPrice = price || existingCourse.price;
+    await Course.findByIdAndUpdate(id, {
+      title: checkTitle,
+      description: checkDescription,
+      price: checkPrice,
+      category: checkCategory,
+    });
+
+    res
+      .status(201)
+      .json({ success: true, message: "Course Updated successfully" });
+  } catch (error) {
+    console.error("Update Course error:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};

@@ -5,11 +5,14 @@ import { User } from "../models/userModel.js";
 import { Teacher } from "../models/teacherSchema.js";
 
 export const protect = async (req, res, next) => {
-  let token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "No token, authorization denied" });
-  }
+  
+  const token = req.cookies.jwt;
+    if (!token) {
+      return res.json({
+        success: false,
+        message: "Logout And Then Login Again",
+      });
+    }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
